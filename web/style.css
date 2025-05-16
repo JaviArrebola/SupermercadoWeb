@@ -87,20 +87,58 @@ body, html {
     margin-top: 10px;
 }
 
-navbar {
-    display: flex;
-    align-items: center;
-    justify-content: flex-start; /* Alineamos los items a la izquierda */
+
+.custom-navbar {
+    background-color: #ffffff;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
 }
 
-.navbar img {
-    margin-right: 10px; /* Espacio entre el logo y el texto */
+.sidebar {
+    width: 220px;
+    background: linear-gradient(to bottom right, #00c6ff, #0072ff);
+    color: white;
+    min-height: 100%;
 }
 
-.navbar-brand {
-    font-size: 1.5rem; /* Tamaño del texto "Supermercado" */
-    font-weight: bold;
+.sidebar .nav-link {
+    color: white;
+    padding: 10px;
+    margin-bottom: 8px;
+    border-radius: 8px;
+    transition: background 0.3s, transform 0.2s;
 }
+
+.sidebar .nav-link:hover {
+    background: rgba(255, 255, 255, 0.2);
+    transform: translateX(5px);
+    text-decoration: none;
+}
+
+.content-area {
+    background-color: #f9f9f9;
+    border-left: 1px solid #eee;
+}
+
+.table {
+    background-color: white;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+}
+
+.table th, .table td {
+    vertical-align: middle;
+}
+
+@media (max-width: 768px) {
+    .sidebar {
+        display: none; 
+    }
+}
+
+
+
+
 
 
 
