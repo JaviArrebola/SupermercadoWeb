@@ -91,6 +91,8 @@ body, html {
 .custom-navbar {
     background-color: #ffffff;
     box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    background-color: #fcfcfc; /* Blanco roto */
+color: #222;
 }
 
 .sidebar {
@@ -114,6 +116,11 @@ body, html {
     text-decoration: none;
 }
 
+.sidebar .nav-link.active {
+    background: rgba(255, 255, 255, 0.4);
+    font-weight: bold;
+}
+
 .content-area {
     background-color: #f9f9f9;
     border-left: 1px solid #eee;
@@ -129,13 +136,57 @@ body, html {
 .table th, .table td {
     vertical-align: middle;
 }
+/* Tabla con bordes suaves, sombra y colores más modernos */
+.table-custom {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0 12px; /* espacio entre filas */
+    background: transparent;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.table-custom thead th {
+    background-color: #0072ff;
+    color: white;
+    font-weight: 600;
+    padding: 12px 20px;
+    text-align: left;
+}
+
+.table-custom tbody tr {
+    background-color: white;
+    box-shadow: 0 2px 8px rgb(0 0 0 / 0.1);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    border-radius: 12px;
+}
+
+.table-custom tbody tr:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 6px 15px rgb(0 0 0 / 0.15);
+}
+
+.table-custom tbody td {
+    padding: 14px 20px;
+    vertical-align: middle;
+    border: none;
+    color: #333;
+}
+
+/* Última celda con botones/íconos */
+.table-custom tbody td:last-child {
+    text-align: center;
+}
+
+/* Íconos estilo botón */
+.table-custom .icon-btn {
+    cursor: pointer;
+}
 
 @media (max-width: 768px) {
     .sidebar {
-        display: none; 
+        display: none;
     }
 }
-
 
 
 
