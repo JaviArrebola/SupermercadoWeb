@@ -6,7 +6,8 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
-
+import java.sql.*;
+import packDB.ConexionDB;
 public class InicioSesion extends HttpServlet {
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -14,29 +15,37 @@ public class InicioSesion extends HttpServlet {
 
         String usuario = request.getParameter("nombre");
         String password = request.getParameter("password");
-
-        final String USUARIO = "Borja";
-        final String PASSWORD = "1234";
-
-        String enviarPagina = "";
-
-        if (usuario != null && usuario.equals(USUARIO)) {
-            System.out.println("Usuario existe");
-
-            if (password != null && password.equals(PASSWORD)) {
-                System.out.println("Inicio de sesión correcto");
-
-                enviarPagina = "productos.jsp";
-                session.setAttribute("usuario", usuario); 
-            } else {
-                System.out.println("Contraseña incorrecta");
-                enviarPagina = "index.jsp?error=passwordnotcorrect";
+        
+        String queryInicioSesion = "SELECT e.password, e.nombre FROM administrador a JOIN empleados e ON a.id = e.id WHERE nombre = ?";
+        
+        String error = null;
+        String enviarPagina = null;
+    
+        Connection conn = ConexionDB.getConexion();
+        ResultSet rs = null;
+        try(PreparedStatement ps = conn.prepareStatement(queryInicioSesion)) {
+            ps.setString(1,usuario);
+            rs = ps.executeQuery();
+            if(rs.next()){
+                if(password.equals(rs.getString("e.password"))){
+                    enviarPagina = "productos.jsp";
+                }
+                else{
+                    error = "Contraseña incorrecta";
+                    session.setAttribute("error", error);
+                    enviarPagina = "index.jsp";
+                    
+                }
+                
+            } else{
+                error = "Usuario incorrecto";
+                session.setAttribute("error", error);
+                enviarPagina = "index.jsp";  
             }
-        } else {
-            System.out.println("Usuario no existe");
-            enviarPagina = "index.jsp?error=usernotexist";
+            
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
-
         response.sendRedirect(enviarPagina);
     }
 

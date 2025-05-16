@@ -15,21 +15,14 @@
                     <h3 class="mb-4"><strong>Inicio de sesion</strong></h3>
 
                     <%
-                        String error = request.getParameter("error");
+                        String error =(String) session.getAttribute("error");
                         if (error != null) {
-                            if (error.equals("passwordnotcorrect")) {
                     %>
                             <div class="alert alert-danger" role="alert">
-                                Contraseña incorrecta.
-                            </div>
-                    <% 
-                            } else if (error.equals("usernotexist")) {
-                    %>
-                            <div class="alert alert-danger" role="alert">
-                                El usuario no existe.
-                            </div>
-                    <% 
-                            }
+                                <%= error %>
+                            </div>          
+                    <%  
+                        session.removeAttribute("error");
                         }
                     %>
 
