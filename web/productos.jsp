@@ -77,7 +77,7 @@
                                 <td><%= rs.getString("codigo_barras") %></td>
                                 <td class="text-center">
                                     <i class="fa-solid fa-pen-to-square icon-btn" style="color:greenyellow" title="Editar"></i>
-                                    <i class="fa-solid fa-trash icon-btn delete"                    style="color:red; cursor:pointer;" title="Eliminar"
+                                    <i class="fa-solid fa-trash icon-btn delete" style="color:red; cursor:pointer;" title="Eliminar" onclick="eliminarProducto(<%= rs.getInt("id") %>)"
                                        data-bs-toggle="modal" data-bs-target="#modalConfirmarEliminar"></i>
                                 </td>
                             </tr>
@@ -142,13 +142,15 @@
 
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                        <button type="button" class="btn btn-danger" id="btnConfirmarEliminar">Eliminar</button>
+                        <form action="EliminarProducto" method="post"><input type="hidden" id="idProducto" name = "idProducto" value="">
+                            <button type="submit" class="btn btn-danger" id ="btnConfirmarEliminar">Eliminar</button>
+                        </form>
                     </div>
 
                 </div>
             </div>
         </div>
 
-
+        <script src="script.js"></script>
     </body>
 </html>
