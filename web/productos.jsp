@@ -77,7 +77,8 @@
                             <td><%= rs.getString("codigo_barras") %></td>
                             <td class="text-center">
                                 <i class="fa-solid fa-pen-to-square icon-btn" style="color:greenyellow" title="Editar"></i>
-                                <i class="fa-solid fa-trash icon-btn delete" style="color:red" title="Eliminar"></i>
+                                <i class="fa-solid fa-trash icon-btn delete" style="color:red; cursor:pointer;" title="Eliminar"
+                                   data-bs-toggle="modal" data-bs-target="#modalConfirmarEliminar"></i>
                             </td>
                         </tr>
                         <%
@@ -92,6 +93,7 @@
         </div>
     </div>
 
+    <!-- Modal para nuevo producto -->
     <div class="modal fade" id="modalNuevoProducto" tabindex="-1" aria-labelledby="modalNuevoProductoLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -127,5 +129,23 @@
         </div>
     </div>
 
+    <!-- Modal de confirmación al eliminar (sin funcionalidad aún) -->
+    <div class="modal fade" id="modalConfirmarEliminar" tabindex="-1" aria-labelledby="modalEliminarLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modalEliminarLabel">Confirmar eliminación</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+                </div>
+                <div class="modal-body">
+                    ¿Estás seguro de que deseas eliminar este producto?
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Eliminar</button>
+                </div>
+            </div>
+        </div>
+    </div>
 </body>
 </html>
