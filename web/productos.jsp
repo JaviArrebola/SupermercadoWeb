@@ -1,4 +1,8 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@page import="packDB.ConexionDB"%>
+<%@page import="java.sql.*"%>
+
+
 <!DOCTYPE html>
 <html lang="es">
     <head>
@@ -45,22 +49,35 @@
                             <tr>
                                 <th>ID</th>
                                 <th>Nombre</th>
-                                <th>Apellido</th>
-                                <th>Usuario</th>
-                                <th>Acciones</th>
+                                <th>Precio Unitario</th>
+                                <th>Articulos en stock</th>
                             </tr>
                         </thead>
                         <tbody>
-                            <tr>
-                                <td>1</td>
-                                <td>Mark</td>
-                                <td>Otto</td>
-                                <td>@mdo</td>
+                            <%
+                                Connection conn = ConexionDB.getConexion();
+                                
+                                try(PreparedStatement ps = conn.prepareStatement("SELECT * FROM productos");
+                                ResultSet rs = ps.executeQuery()) {
+                                while(rs.next()){%>
+                                <tr>
+                                    <td><%= rs.getInt("id")%></td>
+                                    <td><%= rs.getString("nombre")%></td>
+                                    <td><%= rs.getString("precio")%></td>
+                                    <td><%= rs.getString("stock")%></td>
+                                   
                                 <td>
                                     <i class="fa-solid fa-pen-to-square icon-btn"style="color:greenyellow" title="Editar"></i>
                                     <i class="fa-solid fa-trash icon-btn delete"style="color:red" title="Eliminar"></i>
                                 </td>
                             </tr>
+                                 
+                            <%    }
+                            } catch (SQLException e) {
+                                e.printStackTrace();
+                            }
+                            %>
+                            
                           
                         </tbody>
                     </table>
