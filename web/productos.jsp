@@ -25,7 +25,7 @@
         <div class="d-flex" style="height: calc(100vh - 56px);">
             <div class="sidebar p-3">
                 <ul class="nav flex-column">
-                    <li class="nav-item"><a class="nav-link" href="Productos.jsp">Productos</a></li>
+                    <li class="nav-item"><a class="nav-link" href="productos.jsp">Productos</a></li>
                     <li class="nav-item">
                         <a
                             class="nav-link"
@@ -102,11 +102,10 @@
                                 <td><%= rs.getString("stock") %></td>
                                 <td><%= rs.getString("codigo_barras") %></td>
                                 <td class="text-center">
-                                    <i
-                                        class="fa-solid fa-pen-to-square icon-btn"
-                                        style="color:greenyellow"
-                                        title="Editar"
-                                        ></i>
+                                    <%
+                                        String nombre = rs.getString("nombre").replace("'", "\\'");
+                                    %>
+                                    <i class="fa-solid fa-pen-to-square icon-btn" style="color:greenyellow" onclick="editarProducto('<%= nombre %>',<%= rs.getInt("stock") %>, <%= rs.getDouble("precio") %>, <%= rs.getString("codigo_barras")%>)" title="Editar" data-bs-toggle="modal" data-bs-target="#modalEditarProducto"></i>
                                     <i
                                         class="fa-solid fa-trash icon-btn delete"
                                         style="color:red; cursor:pointer;"
@@ -226,7 +225,41 @@
                 </div>
             </div>
         </div>
+        <div class="modal fade" id="modalEditarProducto" tabindex="-1" aria-labelledby="modalEditarProductoLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="modalEditarProductoLabel">Editar Producto</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form>
+                            <div class="mb-3">
+                                <label for="nombreProductoEditar" class="form-label">Nombre</label>
+                                <input type="text" class="form-control" id="nombreProductoEditar">
+                            </div>
+                            <div class="mb-3">
+                                <label for="precioProductoEditar" class="form-label">Precio</label>
+                                <input type="number" class="form-control" id="precioProductoEditar">
+                            </div>
+                            <div class="mb-3">
+                                <label for="stockProductoEditar" class="form-label">Stock</label>
+                                <input type="number" class="form-control" id="stockProductoEditar">
+                            </div>
+                            <div class="mb-3">
+                                <label for="codigoBarrasEditar" class="form-label">Código de Barras</label>
+                                <input type="text" class="form-control" id="codigoBarrasEditar">
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                        <button type="button" class="btn btn-primary">Editar</button>
+                    </div>
+                </div>
+            </div>
+        </div>                
 
-        <script src="ordenarTabla.js"></script>
+        <script src="script.js"></script>
     </body>
 </html>
