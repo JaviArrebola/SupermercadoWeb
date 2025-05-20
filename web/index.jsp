@@ -19,10 +19,10 @@
                         String error =(String) session.getAttribute("error");
                         if (error != null) {
                     %>
-                            <div class="alert alert-danger" role="alert">
-                                <%= error %>
-                            </div>          
-                    <%  
+                    <div class="alert alert-danger" role="alert">
+                        <%= error %>
+                    </div>
+                    <%
                         session.removeAttribute("error");
                         }
                     %>
@@ -35,7 +35,7 @@
                         <div class="mb-3">
                             <label for="password">Contraseña</label>
                             <input type="password" name="password" class="form-control" placeholder="Password" required>
-                        </div> 
+                        </div>
                         <div class="d-grid">
                             <button type="submit" class="btn btn-login d-grid">Entrar</button>
                         </div>

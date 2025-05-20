@@ -16,6 +16,22 @@
         <servlet-name>EliminarProducto</servlet-name>
         <servlet-class>packServlets.EliminarProducto</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>OrdenarProductos</servlet-name>
+        <servlet-class>packServlets.OrdenarProductos</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>OrdenarProducto</servlet-name>
+        <servlet-class>packServlets.OrdenarProducto</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>Producto</servlet-name>
+        <servlet-class>packServlets.Producto</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>OrdenarPro</servlet-name>
+        <servlet-class>packServlets.OrdenarPro</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>inicioSesion</servlet-name>
         <url-pattern>/inicioSesion</url-pattern>
@@ -31,5 +47,21 @@
     <servlet-mapping>
         <servlet-name>EliminarProducto</servlet-name>
         <url-pattern>/EliminarProducto</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>OrdenarProductos</servlet-name>
+        <url-pattern>/OrdenarProductos</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>OrdenarProducto</servlet-name>
+        <url-pattern>/OrdenarProducto</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>Producto</servlet-name>
+        <url-pattern>/Producto</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>OrdenarPro</servlet-name>
+        <url-pattern>/OrdenarPro</url-pattern>
     </servlet-mapping>
 </web-app>

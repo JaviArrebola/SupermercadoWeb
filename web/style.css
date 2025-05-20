@@ -1,16 +1,15 @@
-/*
-Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
-Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/CascadeStyleSheet.css to edit this template
-*/
-/*
-    Created on : 13 may 2025, 12:11:49
-    Author     : ikasle
-*/
+:root {
+    --verde-oscuro: #0C3B1C;
+    --carne-claro: #F4DFC1;
+    --blanco-carne: #FAF4EA;
+}
+
 body, html {
     height: 100%;
     margin: 0;
     font-family: 'Segoe UI', sans-serif;
-
+    background-color: var(--carne-claro);
+    color: #000;
 }
 
 .login-container {
@@ -18,37 +17,32 @@ body, html {
     align-items: center;
     justify-content: center;
     height: 100%;
-
 }
 
 .login-box {
     display: flex;
     width: 800px;
-    background-color: white;
+    background-color: var(--blanco-carne);
     border-radius: 20px;
     overflow: hidden;
-    box-shadow: 0 0 30px 5px rgba(0, 114, 255, 0.6);
+    box-shadow: 0 0 30px 5px rgba(12, 59, 28, 0.4);
 }
+
 @media (max-width: 768px) {
     .login-box {
         flex-direction: column;
     }
 }
 
-
 .login-left {
     flex: 1;
-    padding: 40px;
-    padding-bottom: 50px;
-    padding-top: 50px;
-
-
+    padding: 40px 40px 50px 40px;
 }
 
 .login-right {
     flex: 1;
-    background: linear-gradient(to bottom right, #00c6ff, #0072ff);
-    color: white;
+    background-color: var(--verde-oscuro);
+    color: var(--blanco-carne);
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -65,8 +59,8 @@ body, html {
 .btn-login {
     border-radius: 30px;
     padding: 10px;
-    background: linear-gradient(to right, #00c6ff, #0072ff);
-    color: white;
+    background-color: var(--verde-oscuro);
+    color: var(--blanco-carne);
     border: none;
     transition: 0.3s ease;
 }
@@ -83,27 +77,25 @@ body, html {
     border-radius: 50%;
 }
 
-#tituloInicio{
+#tituloInicio {
     margin-top: 10px;
 }
 
-
 .custom-navbar {
-    background-color: #ffffff;
+    background-color: var(--verde-oscuro);
+    color: var(--blanco-carne);
     box-shadow: 0 2px 4px rgba(0,0,0,0.05);
-    background-color: #0072ff;
-    color: white;
 }
 
 .sidebar {
     width: 220px;
-    background: linear-gradient(to bottom right, #00c6ff, #0072ff);
-    color: white;
+    background-color: var(--verde-oscuro);
+    color: var(--blanco-carne);
     min-height: 100%;
 }
 
 .sidebar .nav-link {
-    color: white;
+    color: var(--blanco-carne);
     padding: 10px;
     margin-bottom: 8px;
     border-radius: 8px;
@@ -122,8 +114,8 @@ body, html {
 }
 
 .content-area {
-    background-color: #f9f9f9;
-    border-left: 1px solid #eee;
+    background-color: var(--blanco-carne);
+    border-left: 1px solid #ddd;
 }
 
 .table {
@@ -136,17 +128,18 @@ body, html {
 .table th, .table td {
     vertical-align: middle;
 }
+
 .table-custom {
     width: 100%;
     border-collapse: separate;
-    border-spacing: 0 12px; 
+    border-spacing: 0 12px;
     background: transparent;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
 .table-custom thead th {
-    background-color: #0072ff;
-    color: white;
+    background-color: var(--verde-oscuro);
+    color: var(--blanco-carne);
     font-weight: 600;
     padding: 12px 20px;
     text-align: left;
@@ -185,9 +178,9 @@ body, html {
     }
 }
 
-
 .btn-primary {
-    background: linear-gradient(to right, #00c6ff, #0072ff);
+    background-color: var(--verde-oscuro);
+    color: var(--blanco-carne);
     border: none;
     border-radius: 30px;
     padding: 10px 20px;
@@ -199,4 +192,3 @@ body, html {
     opacity: 0.9;
     transform: scale(1.02);
 }
-
