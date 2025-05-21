@@ -1,4 +1,9 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%
+    response.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
+    response.setHeader("Pragma", "no-cache");
+    response.setDateHeader("Expires", 0);
+%>
 <!DOCTYPE html>
 <html>
     <head>
@@ -30,11 +35,11 @@
                     <form action="inicioSesion" method="post">
                         <div class="mb-3">
                             <label for="nombre">Nombre</label>
-                            <input type="text" name="nombre" class="form-control" placeholder="Nombre" required>
+                            <input type="text" name="nombre" class="form-control" placeholder="Nombre" autocomplete="off" required>
                         </div>
                         <div class="mb-3">
                             <label for="password">Contraseña</label>
-                            <input type="password" name="password" class="form-control" placeholder="Password" required>
+                            <input type="password" name="password" class="form-control" placeholder="Password" autocomplete="off" required>
                         </div>
                         <div class="d-grid">
                             <button type="submit" class="btn btn-login d-grid">Entrar</button>

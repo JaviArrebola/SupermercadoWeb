@@ -1,6 +1,18 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@page import="packDB.ConexionDB"%>
 <%@page import="java.sql.*"%>
+<%
+    HttpSession sesion = request.getSession(false);
+
+    if (sesion == null || sesion.getAttribute("usuario") == null) {
+        response.sendRedirect("index.jsp");
+        return;
+    }
+ 
+    response.setHeader("Cache-Control", "no-cache, no-store, must-revalidate"); 
+    response.setHeader("Pragma", "no-cache"); 
+    response.setDateHeader("Expires", 0);
+%>
 
 <!DOCTYPE html>
 <html lang="es">
@@ -45,7 +57,7 @@
                             </ul>
                         </div>
                     </li>
-                    <li class="nav-item"><a class="nav-link" href="index.jsp">Cerrar Sesión</a></li>
+                    <li class="nav-item"><a class="nav-link" href="CerrarSesion">Cerrar Sesión</a></li>
                 </ul>
             </div>
 
@@ -76,8 +88,8 @@
                     </div>
                 </div>
                 <%
-                    String estadoEdicion = (String) session.getAttribute("estadoEdicion");
-                    if(estadoEdicion != null){ %>
+                    String estadoProceso = (String) session.getAttribute("estadoProceso");
+                    if(estadoProceso != null){ %>
                 <script>
                     document.addEventListener('DOMContentLoaded', function () {
                         var modalEstado = document.getElementById('ventanaModal');
@@ -87,20 +99,20 @@
                 </script>
                 <%        
                     }
-                    session.removeAttribute("estadoEdicion");
+                    session.removeAttribute("estadoProceso");
                 %>
 
                 <div class="modal" id="ventanaModal" tabindex="-1">
                     <div class="modal-dialog">
                         <div class="modal-content">
-                            <div class="modal-header">
-                                <h5 class="modal-title">Edición de Productos</h5>
+                            <div class="modal-header bg-success text-dark bg-opacity-50">
+                                <h5 class="modal-title">Estado del Proceso</h5>
                                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                             </div>
-                            <div class="modal-body">
-                                <p><%= estadoEdicion %></p>
+                            <div class="modal-body text-primary bg-secondary bg-opacity-10">
+                                <p><%= estadoProceso %></p>
                             </div>
-                            <div class="modal-footer">
+                            <div class="modal-footer bg-secondary bg-opacity-25">
                                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
                             </div>
                         </div>
@@ -183,20 +195,20 @@
                         <div class="modal-body">
 
                             <div class="mb-3">
-                                <label for="nombreProducto" class="form-label">Nombre</label>
-                                <input type="text" class="form-control" id="nombreProducto" />
+                                <label for="nombreProductoInsertar" class="form-label">Nombre</label>
+                                <input type="text" class="form-control" id="nombreProductoInsertar" name="nombreProductoInsertar" required/>
                             </div>
                             <div class="mb-3">
-                                <label for="precioProducto" class="form-label">Precio</label>
-                                <input type="number" class="form-control" id="precioProducto" />
+                                <label for="precioProductoInsertar" class="form-label">Precio</label>
+                                <input type="number" class="form-control" id="precioProductoInsertar" name="precioProductoInsertar" step="any" min="0.0" required/>
                             </div>
                             <div class="mb-3">
-                                <label for="stockProducto" class="form-label">Stock</label>
-                                <input type="number" class="form-control" id="stockProducto" />
+                                <label for="stockProductoInsertar" class="form-label">Stock</label>
+                                <input type="number" class="form-control" id="stockProductoInsertar" name="stockProductoInsertar" min="0" required />
                             </div>
                             <div class="mb-3">
-                                <label for="codigoBarras" class="form-label">Código de Barras</label>
-                                <input type="text" class="form-control" id="codigoBarras" />
+                                <label for="codigoBarrasInsertar" class="form-label">Código de Barras</label>
+                                <input type="text" class="form-control" id="codigoBarrasInsertar" name="codigoBarrasInsertar" />
                             </div>
 
                         </div>
@@ -208,7 +220,7 @@
                                 >
                                 Cancelar
                             </button>
-                            <button type="button" class="btn btn-primary">Añadir</button>
+                            <button type="submit" class="btn btn-primary">Añadir</button>
                         </div>
                     </form>
                 </div>

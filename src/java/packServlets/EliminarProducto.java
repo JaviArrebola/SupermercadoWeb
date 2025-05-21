@@ -16,7 +16,7 @@ public class EliminarProducto extends HttpServlet {
         HttpSession session = request.getSession();
         
         String idProducto = request.getParameter("idProducto");
-        String estado;
+        String estadoProceso;
         String urlEnvio = null;
         
         if(idProducto != null && !idProducto.isEmpty()){
@@ -33,12 +33,12 @@ public class EliminarProducto extends HttpServlet {
                         ps1.setInt(1, producto);
                         
                         if(ps1.executeUpdate() > 0){
-                            estado = "Producto eliminado con exito."; 
-                            session.setAttribute("estado", estado);
+                            estadoProceso = "Producto eliminado con exito."; 
+                            session.setAttribute("estadoProceso", estadoProceso);
                             urlEnvio = "productos.jsp";
                         } else{
-                            estado = "No se ha podido eliminar el producto.";
-                            session.setAttribute("estado", estado);
+                            estadoProceso = "No se ha podido eliminar el producto.";
+                            session.setAttribute("estadoProceso", estadoProceso);
                             urlEnvio = "productos.jsp";
                         }
                         
@@ -47,8 +47,8 @@ public class EliminarProducto extends HttpServlet {
 
                     }
                 } else {
-                    estado = "El producto no estaba en la lista.";
-                    session.setAttribute("estado", estado);
+                    estadoProceso = "El producto no estaba en la lista.";
+                    session.setAttribute("estadoProceso", estadoProceso);
                     urlEnvio = "productos.jsp";
                 }
                 
@@ -56,8 +56,8 @@ public class EliminarProducto extends HttpServlet {
                 e.printStackTrace();
             }
         } else{
-            estado = "No se ha podido eliminar el producto.";
-            session.setAttribute("estado", estado);
+            estadoProceso = "No se ha podido eliminar el producto.";
+            session.setAttribute("estadoProceso", estadoProceso);
             urlEnvio = "productos.jsp";
             
         }

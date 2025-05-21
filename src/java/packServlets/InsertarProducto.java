@@ -9,55 +9,60 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import packDB.ConexionDB;
 
-public class EditarProducto extends HttpServlet {
+public class InsertarProducto extends HttpServlet {
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         HttpSession session = request.getSession();
         
-        String idS = request.getParameter("idProductoEditar");
-        String nombre = request.getParameter("nombreProductoEditar");
-        String precioS = request.getParameter("precioProductoEditar");
-        String stockS = request.getParameter("stockProductoEditar");
-        String codigoBarras = request.getParameter("codigoBarrasEditar");
+        String nombre = request.getParameter("nombreProductoInsertar");
+        String precioS = request.getParameter("precioProductoInsertar");
+        String stockS = request.getParameter("stockProductoInsertar");
+        String codigoBarras = request.getParameter("codigoBarrasInsertar");
         String estadoProceso = "";
         String urlEnvio = "";
- 
-        if (idS != null && !idS.isEmpty() && nombre != null && !nombre.isEmpty() && precioS != null && !precioS.isEmpty() && stockS != null && !stockS.isEmpty()) {
-            int id = Integer.parseInt(idS);
-            double precio = Double.parseDouble(precioS);
-            int stock = Integer.parseInt(stockS);
-            Connection conn = ConexionDB.getConexion();
-            try(PreparedStatement ps = conn.prepareStatement("UPDATE productos SET nombre = ?, precio = ?, stock = ?, codigo_barras = ? WHERE id = ?")) {
-                ps.setString(1, nombre);
-                ps.setDouble(2, precio);
-                ps.setInt(3, stock);
-                ps.setString(4, codigoBarras);
-                ps.setInt(5, id);
-                
-                if (ps.executeUpdate() > 0){
-                    estadoProceso = "Producto editado correctamente.";
-                    session.setAttribute("estadoProceso", estadoProceso);
-                    urlEnvio = "productos.jsp";
-                }
-                else{
-                    estadoProceso = "El Producto no ha podido ser editado correctamente.";
-                    session.setAttribute("estadoProceso", estadoProceso);
-                    urlEnvio = "productos.jsp";
-                }
-                
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
-                
-        } else{
-            estadoProceso = "No se han podido tratar los datos correctamente.";
+        
+        if (nombre == null || nombre.trim().isEmpty() ||
+            precioS == null || stockS == null) {
+            estadoProceso = "Los datos no pueden ser nulos o vacios.";
             session.setAttribute("estadoProceso", estadoProceso);
             urlEnvio = "productos.jsp";
             
+        } else{
+            double precio = Double.parseDouble(precioS);
+            int stock = Integer.parseInt(stockS);
+            if (precio < 0 || stock < 0) {
+                estadoProceso = "Los datos no pueden ser nulos o vacios.";
+                session.setAttribute("estadoProceso", estadoProceso);
+                urlEnvio = "productos.jsp";
+                
+            } else{
+                Connection conn = ConexionDB.getConexion();
+                try(PreparedStatement ps = conn.prepareStatement("INSERT INTO productos (nombre,precio,stock,codigo_barras) VALUES (?,?,?,?)")) {
+                    ps.setString(1, nombre);
+                    ps.setDouble(2, precio);
+                    ps.setInt(3, stock);
+                    ps.setString(4, codigoBarras);
+                    
+                    if(ps.executeUpdate() > 0){
+                        estadoProceso = "Producto añadido con exito";
+                        session.setAttribute("estadoProceso", estadoProceso);
+                        urlEnvio = "productos.jsp";
+             
+                    } else{
+                        estadoProceso = "El producto no ha podido ser añadido.";
+                        session.setAttribute("estadoProceso", estadoProceso);
+                        urlEnvio = "productos.jsp";
+                    }        
+                    
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+                
+            }
         }
-        response.sendRedirect(urlEnvio);
-        
+       response.sendRedirect(urlEnvio);
+   
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

@@ -36,6 +36,10 @@
         <servlet-name>EditarProducto</servlet-name>
         <servlet-class>packServlets.EditarProducto</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>InsertarProducto</servlet-name>
+        <servlet-class>packServlets.InsertarProducto</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>inicioSesion</servlet-name>
         <url-pattern>/inicioSesion</url-pattern>
@@ -71,5 +75,9 @@
     <servlet-mapping>
         <servlet-name>EditarProducto</servlet-name>
         <url-pattern>/EditarProducto</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>InsertarProducto</servlet-name>
+        <url-pattern>/InsertarProducto</url-pattern>
     </servlet-mapping>
 </web-app>

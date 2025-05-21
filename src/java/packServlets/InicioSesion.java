@@ -28,6 +28,7 @@ public class InicioSesion extends HttpServlet {
             rs = ps.executeQuery();
             if(rs.next()){
                 if(password.equals(rs.getString("e.password"))){
+                    session.setAttribute("usuario", usuario);
                     enviarPagina = "productos.jsp";
                 }
                 else{
