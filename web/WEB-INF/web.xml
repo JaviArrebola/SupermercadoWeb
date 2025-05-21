@@ -32,6 +32,10 @@
         <servlet-name>OrdenarPro</servlet-name>
         <servlet-class>packServlets.OrdenarPro</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>EditarProducto</servlet-name>
+        <servlet-class>packServlets.EditarProducto</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>inicioSesion</servlet-name>
         <url-pattern>/inicioSesion</url-pattern>
@@ -63,5 +67,9 @@
     <servlet-mapping>
         <servlet-name>OrdenarPro</servlet-name>
         <url-pattern>/OrdenarPro</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>EditarProducto</servlet-name>
+        <url-pattern>/EditarProducto</url-pattern>
     </servlet-mapping>
 </web-app>

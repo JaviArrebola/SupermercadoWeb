@@ -75,6 +75,38 @@
                         </button>
                     </div>
                 </div>
+                <%
+                    String estadoEdicion = (String) session.getAttribute("estadoEdicion");
+                    if(estadoEdicion != null){ %>
+                <script>
+                    document.addEventListener('DOMContentLoaded', function () {
+                        var modalEstado = document.getElementById('ventanaModal');
+                        var modal = new bootstrap.Modal(modalEstado);
+                        modal.show();
+                    });
+                </script>
+                <%        
+                    }
+                    session.removeAttribute("estadoEdicion");
+                %>
+
+                <div class="modal" id="ventanaModal" tabindex="-1">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title">Edición de Productos</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <p><%= estadoEdicion %></p>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
 
                 <div class="table-responsive">
                     <table class="table-custom">
@@ -105,7 +137,8 @@
                                     <%
                                         String nombre = rs.getString("nombre").replace("'", "\\'");
                                     %>
-                                    <i class="fa-solid fa-pen-to-square icon-btn" style="color:greenyellow" onclick="editarProducto('<%= nombre %>',<%= rs.getInt("stock") %>, <%= rs.getDouble("precio") %>, <%= rs.getString("codigo_barras")%>)" title="Editar" data-bs-toggle="modal" data-bs-target="#modalEditarProducto"></i>
+                                    <i class="fa-solid fa-pen-to-square icon-btn" style="color:greenyellow" onclick="editarProducto('<%= nombre %>',<%= rs.getInt("stock") %>, <%= rs.getDouble("precio") %>, <%= rs.getString("codigo_barras")%>);
+                                            insertarId(<%= rs.getInt("id") %>)" title="Editar" data-bs-toggle="modal" data-bs-target="#modalEditarProducto"></i>
                                     <i
                                         class="fa-solid fa-trash icon-btn delete"
                                         style="color:red; cursor:pointer;"
@@ -137,17 +170,18 @@
             >
             <div class="modal-dialog">
                 <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="modalNuevoProductoLabel">Nuevo Producto</h5>
-                        <button
-                            type="button"
-                            class="btn-close"
-                            data-bs-dismiss="modal"
-                            aria-label="Cerrar"
-                            ></button>
-                    </div>
-                    <div class="modal-body">
-                        <form>
+                    <form action="InsertarProducto" method="post">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="modalNuevoProductoLabel">Nuevo Producto</h5>
+                            <button
+                                type="button"
+                                class="btn-close"
+                                data-bs-dismiss="modal"
+                                aria-label="Cerrar"
+                                ></button>
+                        </div>
+                        <div class="modal-body">
+
                             <div class="mb-3">
                                 <label for="nombreProducto" class="form-label">Nombre</label>
                                 <input type="text" class="form-control" id="nombreProducto" />
@@ -164,18 +198,19 @@
                                 <label for="codigoBarras" class="form-label">Código de Barras</label>
                                 <input type="text" class="form-control" id="codigoBarras" />
                             </div>
-                        </form>
-                    </div>
-                    <div class="modal-footer">
-                        <button
-                            type="button"
-                            class="btn btn-secondary"
-                            data-bs-dismiss="modal"
-                            >
-                            Cancelar
-                        </button>
-                        <button type="button" class="btn btn-primary">Añadir</button>
-                    </div>
+
+                        </div>
+                        <div class="modal-footer">
+                            <button
+                                type="button"
+                                class="btn btn-secondary"
+                                data-bs-dismiss="modal"
+                                >
+                                Cancelar
+                            </button>
+                            <button type="button" class="btn btn-primary">Añadir</button>
+                        </div>
+                    </form>
                 </div>
             </div>
         </div>
@@ -228,34 +263,37 @@
         <div class="modal fade" id="modalEditarProducto" tabindex="-1" aria-labelledby="modalEditarProductoLabel" aria-hidden="true">
             <div class="modal-dialog">
                 <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="modalEditarProductoLabel">Editar Producto</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
-                    </div>
-                    <div class="modal-body">
-                        <form>
+                    <form action="EditarProducto" method="post">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="modalEditarProductoLabel">Editar Producto</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+                        </div>
+                        <div class="modal-body">
+
                             <div class="mb-3">
                                 <label for="nombreProductoEditar" class="form-label">Nombre</label>
-                                <input type="text" class="form-control" id="nombreProductoEditar">
+                                <input type="text" class="form-control" id="nombreProductoEditar" name="nombreProductoEditar">
                             </div>
                             <div class="mb-3">
                                 <label for="precioProductoEditar" class="form-label">Precio</label>
-                                <input type="number" class="form-control" id="precioProductoEditar">
+                                <input type="number" class="form-control" id="precioProductoEditar" step="any" min="0.0" name="precioProductoEditar">
                             </div>
                             <div class="mb-3">
                                 <label for="stockProductoEditar" class="form-label">Stock</label>
-                                <input type="number" class="form-control" id="stockProductoEditar">
+                                <input type="number" class="form-control" id="stockProductoEditar" min="0" name="stockProductoEditar">
                             </div>
                             <div class="mb-3">
                                 <label for="codigoBarrasEditar" class="form-label">Código de Barras</label>
-                                <input type="text" class="form-control" id="codigoBarrasEditar">
+                                <input type="text" class="form-control" id="codigoBarrasEditar" name="codigoBarrasEditar">
                             </div>
-                        </form>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                        <button type="button" class="btn btn-primary">Editar</button>
-                    </div>
+                            <input type="hidden" id="idProductoEditar" name="idProductoEditar" value="">
+
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                            <button type="submit" class="btn btn-primary">Editar</button>
+                        </div>
+                    </form>
                 </div>
             </div>
         </div>                

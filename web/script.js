@@ -9,6 +9,11 @@ function editarProducto(nombre, stock, precio, codigoBarras) {
     document.getElementById("codigoBarrasEditar").value = codigoBarras;
 }
 
+function insertarId(idProducto){
+    document.getElementById("idProductoEditar").value = idProducto;
+}
+
+
 document.getElementById('ordenarTabla').addEventListener('change', function () {
     const criterio = this.value;
     const tabla = document.querySelector('.table-custom tbody');
