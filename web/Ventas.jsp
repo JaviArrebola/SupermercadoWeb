@@ -53,7 +53,7 @@
             </div>
             <div class="flex-grow-1 p-4 content-area">
                 <div class="d-flex justify-content-between align-items-center mb-4">
-                    <h2 class="mb-0">Lista de Productos</h2>
+                    <h2 class="mb-0">Ventas</h2>
                     <div class="d-flex align-items-center gap-3">
                         <label for="ordenarTabla" class="mb-0">Ordenar por:</label>
                         <select id="ordenarTabla" class="form-select form-select-sm" style="width: 150px;">
