@@ -43,37 +43,31 @@
                         <div class="collapse ps-3" id="submenu">
                             <ul class="nav flex-column">
                                 <li class="nav-item"><a class="nav-link" href="ventas.jsp">Ventas</a></li>
-                                <li class="nav-item"><a class="nav-link" href="ProductosVendidos.jsp">Productos vendidos</a></li>
+                                <li class="nav-item"><a class="nav-link" href="productosVendidos.jsp">Productos vendidos</a></li>
                                 <li class="nav-item"><a class="nav-link" href="StockProductos.jsp">Stock productos</a></li>
                             </ul>
                         </div>
                     </li>
-                    <li class="nav-item"><a class="nav-link" href="index.jsp">Cerrar Sesión</a></li>
+                    <li class="nav-item"><a class="nav-link" href="CerrarSesion">Cerrar Sesión</a></li>
                 </ul>
             </div>
             <div class="flex-grow-1 p-4 content-area">
                 <div class="d-flex justify-content-between align-items-center mb-4">
                     <h2 class="mb-0">Ventas</h2>
                     <div class="d-flex align-items-center gap-3">
-                        <label for="ordenarTabla" class="mb-0">Ordenar por:</label>
-                        <select id="ordenarTabla" class="form-select form-select-sm" style="width: 150px;">
-                            <option value="id-desc">ID (Mayor a Menor)</option>
-                            <option value="id-asc">ID (Menor a Mayor)</option>
-                            <option value="nombre-asc">Nombre (A → Z)</option>
-                            <option value="nombre-desc">Nombre (Z → A)</option>
-                            <option value="stock-asc">Stock (Menor a Mayor)</option>
-                            <option value="stock-desc">Stock (Mayor a Menor)</option>
-                            <option value="precio-asc">Precio (Menor a Mayor)</option>
-                            <option value="precio-desc">Precio (Mayor a Menor)</option>
-                            <option value="codigo-asc">Código de Barras (A → Z)</option>
-                            <option value="codigo-desc">Código de Barras (Z → A)</option>
+                        <label for="ordenarTablaVenta">Ordenar por:</label>
+                        <select id="ordenarTablaVenta">
+                            <option value="idv-asc">ID Ascendente</option>
+                            <option value="idv-desc">ID Descendente</option>
+                            <option value="fechav-asc">Fecha Ascendente</option>
+                            <option value="fechav-desc">Fecha Descendente</option>
+                            <option value="totalv-asc">Total Ascendente</option>
+                            <option value="totalv-desc">Total Descendente</option>
                         </select>
+
                     </div>
                 </div>
-
-
-
-                <div class="table-responsive">
+                <div class="table-responsive" id="tablaVentas">
                     <table class="table-custom">
                         <thead >
                             <tr>
@@ -105,6 +99,6 @@
                 </div>
             </div>
         </div>
-        <script src="script.js"></script>
+        <script src="venta.js"></script>
     </body>
 </html>
