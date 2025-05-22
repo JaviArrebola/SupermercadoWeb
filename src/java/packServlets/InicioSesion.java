@@ -6,7 +6,9 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+import java.security.NoSuchAlgorithmException;
 import java.sql.*;
+import packClass.SHA256;
 import packDB.ConexionDB;
 public class InicioSesion extends HttpServlet {
 
@@ -16,18 +18,24 @@ public class InicioSesion extends HttpServlet {
         String usuario = request.getParameter("nombre");
         String password = request.getParameter("password");
         
-        String queryInicioSesion = "SELECT e.password, e.nombre FROM administrador a JOIN empleados e ON a.id = e.id WHERE nombre = ?";
+        String queryInicioSesion = "SELECT e.password, e.username FROM administrador a JOIN empleados e ON a.id = e.id WHERE username = ?";
         
         String error = null;
         String enviarPagina = null;
     
         Connection conn = ConexionDB.getConexion();
+        String encoded="";
+		try {
+			encoded = SHA256.generateSHA(password);
+		} catch (NoSuchAlgorithmException e) {
+			e.printStackTrace();
+		}
         ResultSet rs = null;
         try(PreparedStatement ps = conn.prepareStatement(queryInicioSesion)) {
             ps.setString(1,usuario);
             rs = ps.executeQuery();
             if(rs.next()){
-                if(password.equals(rs.getString("e.password"))){
+                if(encoded.equals(rs.getString("e.password"))){
                     session.setAttribute("usuario", usuario);
                     enviarPagina = "productos.jsp";
                 }
