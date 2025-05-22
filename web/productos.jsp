@@ -33,33 +33,26 @@
                 <span class="navbar-brand mb-0 h1">Supermercado</span>
             </div>
         </nav>
-
-        <div class="d-flex" style="height: calc(100vh - 56px);">
-            <div class="sidebar p-3">
-                <ul class="nav flex-column">
-                    <li class="nav-item"><a class="nav-link" href="productos.jsp">Productos</a></li>
-                    <li class="nav-item">
-                        <a
-                            class="nav-link"
-                            data-bs-toggle="collapse"
-                            href="#submenu"
-                            role="button"
-                            aria-expanded="false"
-                            aria-controls="submenu"
-                            >
-                            Estadísticas <i class="fa-solid fa-arrow-down"></i>
-                        </a>
-                        <div class="collapse ps-3" id="submenu">
-                            <ul class="nav flex-column">
-                                <li class="nav-item"><a class="nav-link" href="Ventas.jsp">Ventas</a></li>
-                                <li class="nav-item"><a class="nav-link" href="ProductosVendidos.jsp">Productos vendidos</a></li>
-                                <li class="nav-item"><a class="nav-link" href="StockProductos.jsp">Stock productos</a></li>
-                            </ul>
-                        </div>
-                    </li>
-                    <li class="nav-item"><a class="nav-link" href="CerrarSesion">Cerrar Sesión</a></li>
-                </ul>
-            </div>
+        <div class="main-wrapper">
+        <div class="sidebar p-3">
+            <ul class="nav flex-column">
+                <li class="nav-item"><a class="nav-link" href="productos.jsp">Productos</a></li>
+                <li class="nav-item">
+                    <a class="nav-link" data-bs-toggle="collapse" href="#submenu" role="button" aria-expanded="false" aria-controls="submenu">
+                        Estadísticas <i class="fa-solid fa-arrow-down"></i>
+                    </a>
+                    <div class="collapse ps-3" id="submenu">
+                        <ul class="nav flex-column">
+                            <li class="nav-item"><a class="nav-link" href="ventas.jsp">Ventas</a></li>
+                            <li class="nav-item"><a class="nav-link" href="ProductosVendidos.jsp">Productos vendidos</a></li>
+                            <li class="nav-item"><a class="nav-link" href="StockProductos.jsp">Stock productos</a></li>
+                        </ul>
+                    </div>
+                </li>
+                <li class="nav-item"><a class="nav-link" href="CerrarSesion">Cerrar Sesión</a></li>
+            </ul>
+        </div>
+        
 
             <div class="flex-grow-1 p-4 content-area">
                 <div class="d-flex justify-content-between align-items-center mb-4">
