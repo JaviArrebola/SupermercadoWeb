@@ -1,10 +1,14 @@
-<%-- 
-    Document   : StockProductos
-    Created on : 16 may 2025, 13:23:41
-    Author     : ikasle
---%>
-
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%
+    HttpSession sesion = request.getSession(false);
+    if (sesion == null || sesion.getAttribute("usuario") == null) {
+        response.sendRedirect("index.jsp");
+        return;
+    }
+    response.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
+    response.setHeader("Pragma", "no-cache");
+    response.setDateHeader("Expires", 0);
+%>
 <!DOCTYPE html>
 <html>
     <head>
