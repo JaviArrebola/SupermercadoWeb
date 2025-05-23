@@ -18,12 +18,13 @@
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <title>Ventas</title>
-        <link rel="icon" type="image/x-icon" href="imagenes/icon.png">
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" />
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css" />
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
         <link href="style.css" rel="stylesheet" />
+        <link rel="icon" type="image/x-icon" href="imagenes/icon.png">
+
     </head>
     <body>
         <nav class="navbar px-3 custom-navbar">
@@ -54,52 +55,73 @@
             </div>
             <div class="flex-grow-1 p-4 content-area">
                 <div class="d-flex justify-content-between align-items-center mb-4">
-                    <h2 class="mb-0">Ventas</h2>
+                    <h2 class="mb-0">Productos Vendidos</h2>
                     <div class="d-flex align-items-center gap-3">
-                        <label for="ordenarTablaVenta">Ordenar por:</label>
-                        <select id="ordenarTablaVenta">
-                            <option value="idv-asc">ID Ascendente</option>
-                            <option value="idv-desc">ID Descendente</option>
-                            <option value="fechav-asc">Fecha Ascendente</option>
-                            <option value="fechav-desc">Fecha Descendente</option>
-                            <option value="totalv-asc">Total Ascendente</option>
-                            <option value="totalv-desc">Total Descendente</option>
+                        <label for="ordenar">Ordenar por:</label>
+                        <select id="ordenarTablaVendidos">
+                            <option value="0-asc">ID Venta Ascendente</option>
+                            <option value="0-desc">ID Venta Descendente</option>
+                            <option value="1-asc">ID Producto Ascendente</option>
+                            <option value="1-desc">ID Producto Descendente</option>
+                            <option value="2-asc">Nombre Ascendente</option>
+                            <option value="2-desc">Nombre Descendente</option>
+                            <option value="3-asc">Cantidad Ascendente</option>
+                            <option value="3-desc">Cantidad Descendente</option>
+                            <option value="4-asc">Precio Ascendente</option>
+                            <option value="4-desc">Precio Descendente</option>
                         </select>
-
                     </div>
                 </div>
-                <div class="table-responsive" id="tablaVentas">
-                    <table class="table-custom">
+                <div class="table-responsive">
+                    <table class="table-custom" id="tablaVendidos">
                         <thead >
                             <tr>
                                 <th>ID Venta</th>
-                                <th>Fecha</th>
-                                <th>Total</th>
+                                <th>ID Producto</th>
+                                <th>Nombre</th>
+                                <th>Cantidad</th>
+                                <th>Precio</th>
                             </tr>
                         </thead>
                         <tbody>
                             <%
-                                Connection conn = ConexionDB.getConexion();
-                                try (PreparedStatement ps = conn.prepareStatement("SELECT * FROM ventas");
-                                     ResultSet rs = ps.executeQuery()) {
+                                Connection conn = null;
+                                PreparedStatement ps = null;
+                                ResultSet rs = null;
+                                try {
+                                    conn = ConexionDB.getConexion();
+                                    String sql = "SELECT dv.id_venta, dv.id_producto, p.nombre AS nombre_producto, " +
+                                                 "SUM(dv.cantidad) AS cantidad, " +
+                                                 "SUM(dv.cantidad * dv.precio_unitario) AS precio_total " +
+                                                 "FROM detalle_venta dv " +
+                                                 "JOIN productos p ON dv.id_producto = p.id " +
+                                                 "GROUP BY dv.id_venta, dv.id_producto, p.nombre " +
+                                                 "ORDER BY dv.id_venta, dv.id_producto";
+
+                                    ps = conn.prepareStatement(sql);
+                                    rs = ps.executeQuery();
+
                                     while (rs.next()) {
                             %>
                             <tr>
                                 <td><%= rs.getInt("id_venta") %></td>
-                                <td><%= rs.getString("fecha") %></td>
-                                <td><%= rs.getString("total") %></td>
+                                <td><%= rs.getInt("id_producto") %></td>
+                                <td><%= rs.getString("nombre_producto") %></td>
+                                <td><%= rs.getInt("cantidad") %></td>
+                                <td><%= rs.getBigDecimal("precio_total") %></td>
                             </tr>
                             <%
-                                    }
+                                 }
                                 } catch (SQLException e) {
-                                    out.println("<tr><td colspan='3'>Error: " + e.getMessage() + "</td></tr>");
+                                    out.println("<tr><td colspan='5'>Error: " + e.getMessage() + "</td></tr>");
                                 }
                             %>
                         </tbody>
+
                     </table>
                 </div>
             </div>
         </div>
-        <script src="venta.js"></script>
+        <script src="script.js"></script>
     </body>
 </html>

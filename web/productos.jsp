@@ -25,6 +25,8 @@
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
         <link href="style.css" rel="stylesheet" />
+        <link rel="icon" type="image/x-icon" href="imagenes/icon.png">
+
     </head>
     <body>
         <nav class="navbar px-3 custom-navbar">
@@ -34,42 +36,40 @@
             </div>
         </nav>
         <div class="main-wrapper">
-        <div class="sidebar p-3">
-            <ul class="nav flex-column">
-                <li class="nav-item"><a class="nav-link" href="productos.jsp">Productos</a></li>
-                <li class="nav-item">
-                    <a class="nav-link" data-bs-toggle="collapse" href="#submenu" role="button" aria-expanded="false" aria-controls="submenu">
-                        Estadísticas <i class="fa-solid fa-arrow-down"></i>
-                    </a>
-                    <div class="collapse ps-3" id="submenu">
-                        <ul class="nav flex-column">
-                            <li class="nav-item"><a class="nav-link" href="ventas.jsp">Ventas</a></li>
-                            <li class="nav-item"><a class="nav-link" href="productosVendidos.jsp">Productos vendidos</a></li>
-                            <li class="nav-item"><a class="nav-link" href="stockProductos.jsp">Stock productos</a></li>
-                        </ul>
-                    </div>
-                </li>
-                <li class="nav-item"><a class="nav-link" href="CerrarSesion">Cerrar Sesión</a></li>
-            </ul>
-        </div>
-        
+            <div class="sidebar p-3">
+                <ul class="nav flex-column">
+                    <li class="nav-item"><a class="nav-link" href="productos.jsp">Productos</a></li>
+                    <li class="nav-item">
+                        <a class="nav-link" data-bs-toggle="collapse" href="#submenu" role="button" aria-expanded="false" aria-controls="submenu">
+                            Estadísticas <i class="fa-solid fa-arrow-down"></i>
+                        </a>
+                        <div class="collapse ps-3" id="submenu">
+                            <ul class="nav flex-column">
+                                <li class="nav-item"><a class="nav-link" href="ventas.jsp">Ventas</a></li>
+                                <li class="nav-item"><a class="nav-link" href="productosVendidos.jsp">Productos vendidos</a></li>
+                                <li class="nav-item"><a class="nav-link" href="stockProductos.jsp">Stock productos</a></li>
+                            </ul>
+                        </div>
+                    </li>
+                    <li class="nav-item"><a class="nav-link" href="CerrarSesion">Cerrar Sesión</a></li>
+                </ul>
+            </div>
+
 
             <div class="flex-grow-1 p-4 content-area">
                 <div class="d-flex justify-content-between align-items-center mb-4">
                     <h2 class="mb-0">Lista de Productos</h2>
                     <div class="d-flex align-items-center gap-3">
-                        <label for="ordenarTabla" class="mb-0">Ordenar por:</label>
-                        <select id="ordenarTabla" class="form-select form-select-sm" style="width: 150px;">
-                            <option value="id-desc">ID (Mayor a Menor)</option>
-                            <option value="id-asc">ID (Menor a Mayor)</option>
-                            <option value="nombre-asc">Nombre (A → Z)</option>
-                            <option value="nombre-desc">Nombre (Z → A)</option>
-                            <option value="stock-asc">Stock (Menor a Mayor)</option>
-                            <option value="stock-desc">Stock (Mayor a Menor)</option>
-                            <option value="precio-asc">Precio (Menor a Mayor)</option>
-                            <option value="precio-desc">Precio (Mayor a Menor)</option>
-                            <option value="codigo-asc">Código de Barras (A → Z)</option>
-                            <option value="codigo-desc">Código de Barras (Z → A)</option>
+                        <label for="ordenar">Ordenar por:</label>
+                        <select id="ordenarTablaStock">
+                            <option value="0-asc">ID Ascendente</option>
+                            <option value="0-desc">ID Descendente</option>
+                            <option value="1-asc">Nombre Ascendente</option>
+                            <option value="1-desc">Nombre Descendente</option>
+                            <option value="2-asc">Precio Ascendente</option>
+                            <option value="2-desc">Precio Descendente</option>
+                            <option value="3-asc">Stock Ascendente</option>
+                            <option value="3-desc">Stock Descendente</option>
                         </select>
                         <button
                             class="btn btn-primary"
@@ -114,7 +114,7 @@
 
 
                 <div class="table-responsive">
-                    <table class="table-custom">
+                    <table class="table-custom" id="tablaStock">
                         <thead>
                             <tr>
                                 <th>ID</th>

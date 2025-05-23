@@ -56,20 +56,19 @@
                 <div class="d-flex justify-content-between align-items-center mb-4">
                     <h2 class="mb-0">Ventas</h2>
                     <div class="d-flex align-items-center gap-3">
-                        <label for="ordenarTablaVenta">Ordenar por:</label>
-                        <select id="ordenarTablaVenta">
-                            <option value="idv-asc">ID Ascendente</option>
-                            <option value="idv-desc">ID Descendente</option>
-                            <option value="fechav-asc">Fecha Ascendente</option>
-                            <option value="fechav-desc">Fecha Descendente</option>
-                            <option value="totalv-asc">Total Ascendente</option>
-                            <option value="totalv-desc">Total Descendente</option>
+                        <label for="ordenar">Ordenar por:</label>
+                        <select id="ordenarTablaVentas">
+                            <option value="0-asc">ID Ascendente</option>
+                            <option value="0-desc">ID Descendente</option>
+                            <option value="1-asc">Fecha Ascendente</option>
+                            <option value="1-desc">Fecha Descendente</option>
+                            <option value="2-asc">Total Ascendente</option>
+                            <option value="2-desc">Total Descendente</option>
                         </select>
-
                     </div>
                 </div>
-                <div class="table-responsive" id="tablaVentas">
-                    <table class="table-custom">
+                <div class="table-responsive">
+                    <table class="table-custom" id="tablaVentas">
                         <thead >
                             <tr>
                                 <th>ID Venta</th>
@@ -100,6 +99,6 @@
                 </div>
             </div>
         </div>
-        <script src="venta.js"></script>
+        <script src="script.js"></script>
     </body>
 </html>
