@@ -135,14 +135,14 @@
                             <tr>
                                 <td><%= rs.getInt("id") %></td>
                                 <td><%= rs.getString("nombre") %></td>
-                                <td><%= rs.getString("precio") %></td>
-                                <td><%= rs.getString("stock") %></td>
+                                <td><%= rs.getDouble("precio") %></td>
+                                <td><%= rs.getInt("stock") %></td>
                                 <td><%= rs.getString("codigo_barras") %></td>
                                 <td class="text-center">
                                     <%
                                         String nombre = rs.getString("nombre").replace("'", "\\'");
                                     %>
-                                    <i class="fa-solid fa-pen-to-square icon-btn" style="color:greenyellow" onclick="editarProducto('<%= nombre %>',<%= rs.getInt("stock") %>, <%= rs.getDouble("precio") %>, <%= rs.getString("codigo_barras")%>);
+                                    <i class="fa-solid fa-pen-to-square icon-btn" style="color:greenyellow" onclick="editarProducto('<%= rs.getString("nombre") %>',<%= rs.getInt("stock") %>, <%= rs.getDouble("precio") %>, '<%= rs.getString("codigo_barras")%>');
                                             insertarId(<%= rs.getInt("id") %>)" title="Editar" data-bs-toggle="modal" data-bs-target="#modalEditarProducto"></i>
                                     <i
                                         class="fa-solid fa-trash icon-btn delete"
