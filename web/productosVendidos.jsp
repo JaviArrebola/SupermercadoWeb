@@ -45,7 +45,7 @@
                             <ul class="nav flex-column">
                                 <li class="nav-item"><a class="nav-link" href="ventas.jsp">Ventas</a></li>
                                 <li class="nav-item"><a class="nav-link" href="productosVendidos.jsp">Productos vendidos</a></li>
-                                <li class="nav-item"><a class="nav-link" href="StockProductos.jsp">Stock productos</a></li>
+                                <li class="nav-item"><a class="nav-link" href="stockProductos.jsp">Stock productos</a></li>
                             </ul>
                         </div>
                     </li>

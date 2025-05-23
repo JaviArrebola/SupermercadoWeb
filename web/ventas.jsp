@@ -23,6 +23,7 @@
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
         <link href="style.css" rel="stylesheet" />
+        <link rel="icon" type="image/x-icon" href="imagenes/icon.png">
     </head>
     <body>
         <nav class="navbar px-3 custom-navbar">
@@ -44,7 +45,7 @@
                             <ul class="nav flex-column">
                                 <li class="nav-item"><a class="nav-link" href="ventas.jsp">Ventas</a></li>
                                 <li class="nav-item"><a class="nav-link" href="productosVendidos.jsp">Productos vendidos</a></li>
-                                <li class="nav-item"><a class="nav-link" href="StockProductos.jsp">Stock productos</a></li>
+                                <li class="nav-item"><a class="nav-link" href="stockProductos.jsp">Stock productos</a></li>
                             </ul>
                         </div>
                     </li>
