@@ -2,13 +2,15 @@
 <%@page import="packDB.ConexionDB"%>
 <%@page import="java.sql.*"%>
 <%
+    // Validación de sesión del usuario
     HttpSession sesion = request.getSession(false);
 
     if (sesion == null || sesion.getAttribute("usuario") == null) {
-        response.sendRedirect("index.jsp");
+        response.sendRedirect("index.jsp"); // Redirige a login si no hay sesión
         return;
     }
  
+    // Evita que la página este en el cache
     response.setHeader("Cache-Control", "no-cache, no-store, must-revalidate"); 
     response.setHeader("Pragma", "no-cache"); 
     response.setDateHeader("Expires", 0);
@@ -29,12 +31,14 @@
 
     </head>
     <body>
+        <!-- Barra de navegación -->
         <nav class="navbar px-3 custom-navbar">
             <div class="d-flex align-items-center">
                 <!-- Botón hamburguesa visible solo en móvil -->
                 <button class="btn btn-primary d-lg-none me-2" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasSidebar" aria-controls="offcanvasSidebar">
                     <i class="fa fa-bars"></i>
                 </button>
+                <!-- Logo e identificador -->
                 <img src="imagenes/icon.png" alt="Supermercado" width="40" class="me-2" />
                 <span class="navbar-brand mb-0 h1">Supermercado</span>
             </div>
@@ -45,6 +49,7 @@
                 <ul class="nav flex-column">
                     <li class="nav-item"><a class="nav-link" href="productos.jsp">Productos</a></li>
                     <li class="nav-item">
+                        <!-- Submenú colapsable de estadísticas -->
                         <a class="nav-link" data-bs-toggle="collapse" href="#submenu" role="button" aria-expanded="false" aria-controls="submenu">
                             Estadísticas <i class="fa-solid fa-arrow-down"></i>
                         </a>
@@ -60,13 +65,15 @@
                 </ul>
             </div>
 
-
+            <!-- Contenido principal -->
             <div class="flex-grow-1 p-4 content-area">
                 <div class="d-flex justify-content-between align-items-center mb-4">
                     <h2 class="mb-0">Lista de Productos</h2>
+                    <!-- Selector de ordenamiento y botón para nuevo producto -->
                     <div class="d-flex align-items-center gap-3">
                         <label for="ordenar">Ordenar por:</label>
                         <select id="ordenarTablaStock">
+                            <!-- Opciones para ordenar la tabla por columnas -->
                             <option value="0-asc">ID Ascendente</option>
                             <option value="0-desc">ID Descendente</option>
                             <option value="1-asc">Nombre Ascendente</option>
@@ -76,6 +83,7 @@
                             <option value="3-asc">Stock Ascendente</option>
                             <option value="3-desc">Stock Descendente</option>
                         </select>
+                        <!-- Botón para abrir modal de nuevo producto -->
                         <button
                             class="btn btn-primary"
                             data-bs-toggle="modal"
@@ -85,6 +93,7 @@
                         </button>
                     </div>
                 </div>
+                <%-- Mostrar modal de estado del proceso si existe mensaje --%>
                 <%
                     String estadoProceso = (String) session.getAttribute("estadoProceso");
                     if(estadoProceso != null){ %>
@@ -99,7 +108,8 @@
                     }
                     session.removeAttribute("estadoProceso");
                 %>
-
+                
+                <!-- Modal que muestra el estado del proceso como éxito o error -->
                 <div class="modal" id="ventanaModal" tabindex="-1">
                     <div class="modal-dialog">
                         <div class="modal-content">
@@ -117,6 +127,7 @@
                     </div>
                 </div>
 
+                <!-- Tabla de productos -->
                 <div class="table-responsive">
                     <table class="table" id="tablaStock">
                         <thead class="thead-dark">
@@ -127,12 +138,10 @@
                                 <th scope="col">Stock</th>
                                 <th scope="col">Codigo</th>
                                <th scope="col">Editar</th>
-
-
                             </tr>
                         </thead>
                         <tbody>
-                            <tbody>
+                            <!-- Carga de productos desde base de datos -->
                             <%
                                 Connection conn = ConexionDB.getConexion();
                                 try (PreparedStatement ps = conn.prepareStatement("SELECT * FROM productos");
@@ -142,15 +151,14 @@
                             <tr>
                                 <td><%= rs.getInt("id") %></td>
                                 <td><%= rs.getString("nombre") %></td>
-                                <td><%= rs.getDouble("precio") %></td>
+                                <td><%= rs.getString("precio") %></td>
                                 <td><%= rs.getInt("stock") %></td>
                                 <td><%= rs.getString("codigo_barras") %></td>
                                 <td class="text-center">
-                                    <%
-                                        String nombre = rs.getString("nombre").replace("'", "\\'");
-                                    %>
-                                    <i class="fa-solid fa-pen-to-square icon-btn" style="color:greenyellow" onclick="editarProducto('<%= rs.getString("nombre") %>',<%= rs.getInt("stock") %>, <%= rs.getDouble("precio") %>, '<%= rs.getString("codigo_barras")%>');
+                                    <!-- Ícono para editar producto -->
+                                    <i class="fa-solid fa-pen-to-square icon-btn" style="color:greenyellow" onclick="editarProducto('<%= rs.getString("nombre") %>',<%= rs.getInt("stock") %>, '<%= rs.getString("precio") %>', '<%= rs.getString("codigo_barras")%>');
                                             insertarId(<%= rs.getInt("id") %>)" title="Editar" data-bs-toggle="modal" data-bs-target="#modalEditarProducto"></i>
+                                    <!-- Ícono para eliminar producto -->       
                                     <i
                                         class="fa-solid fa-trash icon-btn delete"
                                         style="color:red; cursor:pointer;"
