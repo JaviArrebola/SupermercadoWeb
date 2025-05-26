@@ -1,4 +1,6 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%@page import="packDB.ConexionDB"%>
+<%@page import="java.sql.*"%>
 <%
     HttpSession sesion = request.getSession(false);
     if (sesion == null || sesion.getAttribute("usuario") == null) {
@@ -23,14 +25,14 @@
 
     </head>
     <body>
-           <nav class="navbar px-3 custom-navbar">
+        <nav class="navbar px-3 custom-navbar">
             <div class="d-flex align-items-center">
-                <img src="imagenes/icon.png" alt="Supermercado" width="40" class="me-2">
+                <img src="imagenes/icon.png" alt="Supermercado" width="40" class="me-2" />
                 <span class="navbar-brand mb-0 h1">Supermercado</span>
             </div>
         </nav>
 
-        <div class="d-flex" style="height: calc(100vh - 56px);">
+        <div class="main-wrapper">
             <div class="sidebar p-3">
                 <ul class="nav flex-column">
                     <li class="nav-item"><a class="nav-link" href="productos.jsp">Productos</a></li>
@@ -46,47 +48,55 @@
                             </ul>
                         </div>
                     </li>
-                    <li class="nav-item"><a class="nav-link" href="index.jsp">Cerrar Sesión</a></li>
+                    <li class="nav-item"><a class="nav-link" href="CerrarSesion">Cerrar Sesión</a></li>
                 </ul>
             </div>
-
-            <div class="flex-grow-1 p-4 content-area">
+            <div class="flex-grow-1 p-3 content-area">
                 <div class="d-flex justify-content-between align-items-center mb-4">
-                    <h2 class="mb-0">Lista de Productos</h2>
-                    <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addModal">
-                        Añadir Producto
-                    </button>
+                    <h2 class="mb-0">Ventas</h2>
+                    <div class="d-flex align-items-center gap-3">
+                        <label for="ordenar">Ordenar por:</label>
+                        <select id="ordenarTablaVentas">
+                            <option value="0-asc">ID Ascendente</option>
+                            <option value="0-desc">ID Descendente</option>
+                            <option value="2-asc">Nombre Ascendente</option>
+                            <option value="2-desc">Nombre Descendente</option>
+                            <option value="3-asc">Stock Ascendente</option>
+                            <option value="3-desc">Stock Descendente</option>
+                        </select>
+                    </div>
                 </div>
-
                 <div class="table-responsive">
-                    <table class="table-custom">
-                        <thead>
+                    <table class="table-custom" id="tablaStock">
+                        <thead >
                             <tr>
-                                <th>ID</th>
+                                <th>ID Venta</th>
                                 <th>Nombre</th>
-                                <th>Precio</th>
                                 <th>Stock</th>
-                                <th>Codigo_Barras</th>
-                                <th></th>
-
                             </tr>
                         </thead>
                         <tbody>
+                            <%
+                                Connection conn = ConexionDB.getConexion();
+                                try (PreparedStatement ps = conn.prepareStatement("SELECT * FROM productos");
+                                     ResultSet rs = ps.executeQuery()) {
+                                    while (rs.next()) {
+                            %>
                             <tr>
-                                <td>1</td>
-                                <td>Alargador</td>
-                                <td>5</td>
-                                <td>79</td>
-                                <td>8412852562445</td>
-                                <td>
-                                    <i class="fa-solid fa-pen-to-square icon-btn" style="color:greenyellow" title="Editar"></i>
-                                    <i class="fa-solid fa-trash icon-btn delete" style="color:red; cursor:pointer;" title="Eliminar"></i>
-                                </td>
+                                <td><%= rs.getInt("id") %></td>
+                                <td><%= rs.getString("nombre") %></td>
+                                <td><%= rs.getString("stock") %></td>
                             </tr>
+                            <%
+                                    }
+                                } catch (SQLException e) {
+                                }
+                            %>
                         </tbody>
                     </table>
                 </div>
             </div>
         </div>
+        <script src="script.js"></script>
     </body>
 </html>

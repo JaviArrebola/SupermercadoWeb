@@ -57,7 +57,7 @@
                     <h2 class="mb-0">Ventas</h2>
                     <div class="d-flex align-items-center gap-3">
                         <label for="ordenar">Ordenar por:</label>
-                        <select id="ordenarTablaVentas">
+                        <select id="ordenarTablaStock">
                             <option value="0-asc">ID Ascendente</option>
                             <option value="0-desc">ID Descendente</option>
                             <option value="1-asc">Fecha Ascendente</option>

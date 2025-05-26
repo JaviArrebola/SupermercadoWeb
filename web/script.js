@@ -40,6 +40,6 @@ document.addEventListener("DOMContentLoaded", function () {
             return orden === "asc" ? resultado : -resultado;
         });
 
-        filas.forEach(fila => cuerpo.appendChild(fila)); // Reorganiza las filas
+        filas.forEach(fila => cuerpo.appendChild(fila)); 
     }
 });

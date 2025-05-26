@@ -35,7 +35,7 @@
 
                     <form action="inicioSesion" method="post">
                         <div class="mb-3">
-                            <label for="nombre">Nombre</label>
+                            <label for="nombre">Username</label>
                             <input type="text" name="nombre" class="form-control" placeholder="Nombre" autocomplete="off" required>
                         </div>
                         <div class="mb-3">
