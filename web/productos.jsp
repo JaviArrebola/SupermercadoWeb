@@ -23,7 +23,7 @@
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" />
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css" />
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
         <link href="style.css" rel="stylesheet" />
         <link rel="icon" type="image/x-icon" href="imagenes/icon.png">
 
@@ -31,12 +31,17 @@
     <body>
         <nav class="navbar px-3 custom-navbar">
             <div class="d-flex align-items-center">
+                <!-- Botón hamburguesa visible solo en móvil -->
+                <button class="btn btn-primary d-lg-none me-2" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasSidebar" aria-controls="offcanvasSidebar">
+                    <i class="fa fa-bars"></i>
+                </button>
                 <img src="imagenes/icon.png" alt="Supermercado" width="40" class="me-2" />
                 <span class="navbar-brand mb-0 h1">Supermercado</span>
             </div>
         </nav>
-        <div class="main-wrapper">
-            <div class="sidebar p-3">
+        <div class="d-flex">
+            <!-- Sidebar fijo solo en escritorio -->
+            <div class="sidebar p-3 d-none d-lg-block" style="width: 250px; min-height: 100vh; border-right: 1px solid #ddd;">
                 <ul class="nav flex-column">
                     <li class="nav-item"><a class="nav-link" href="productos.jsp">Productos</a></li>
                     <li class="nav-item">
@@ -62,12 +67,12 @@
                     <div class="d-flex align-items-center gap-3">
                         <label for="ordenar">Ordenar por:</label>
                         <select id="ordenarTablaStock">
-                            <option value="0-asc">ID (Mayor a Menor)</option>
-                            <option value="0-desc">ID (Menor a Mayor)</option>
-                            <option value="1-asc">Nombre (Menor a Mayor)</option>
-                            <option value="1-desc">Nombre (Mayor a Menor)</option>
-                            <option value="2-asc">Precio (Menor a Mayor)</option>
-                            <option value="2-desc">Precio (Mayor a Menor)</option>
+                            <option value="0-asc">ID Ascendente</option>
+                            <option value="0-desc">ID Descendente</option>
+                            <option value="1-asc">Nombre Ascendente</option>
+                            <option value="1-desc">Nombre Descendente</option>
+                            <option value="2-asc">Precio Ascendente</option>
+                            <option value="2-desc">Precio Descendente</option>
                             <option value="3-asc">Stock Ascendente</option>
                             <option value="3-desc">Stock Descendente</option>
                         </select>
@@ -112,20 +117,22 @@
                     </div>
                 </div>
 
-
                 <div class="table-responsive">
-                    <table class="table-custom" id="tablaStock">
-                        <thead>
+                    <table class="table" id="tablaStock">
+                        <thead class="thead-dark">
                             <tr>
-                                <th>ID</th>
-                                <th>Nombre</th>
-                                <th>Precio Unitario</th>
-                                <th>Artículos en stock</th>
-                                <th>Código de barras</th>
-                                <th></th>
+                                <th scope="col">ID</th>
+                                <th scope="col">Nombre</th>
+                                <th scope="col">Precio</th>
+                                <th scope="col">Stock</th>
+                                <th scope="col">Codigo</th>
+                               <th scope="col">Editar</th>
+
+
                             </tr>
                         </thead>
                         <tbody>
+                            <tbody>
                             <%
                                 Connection conn = ConexionDB.getConexion();
                                 try (PreparedStatement ps = conn.prepareStatement("SELECT * FROM productos");
@@ -301,7 +308,32 @@
                     </form>
                 </div>
             </div>
-        </div>                
+        </div>    
+                        
+        <div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasSidebar" aria-labelledby="offcanvasSidebarLabel">
+            <div class="offcanvas-header">
+                <h5 class="offcanvas-title" id="offcanvasSidebarLabel">Menú</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Cerrar"></button>
+            </div>
+            <div class="offcanvas-body">
+                <ul class="nav flex-column">
+                    <li class="nav-item"><a class="nav-link" href="productos.jsp">Productos</a></li>
+                    <li class="nav-item">
+                        <a class="nav-link" data-bs-toggle="collapse" href="#submenuMobile" role="button" aria-expanded="false" aria-controls="submenuMobile">
+                            Estadísticas <i class="fa-solid fa-arrow-down"></i>
+                        </a>
+                        <div class="collapse ps-3" id="submenuMobile">
+                            <ul class="nav flex-column">
+                                <li class="nav-item"><a class="nav-link" href="ventas.jsp">Ventas</a></li>
+                                <li class="nav-item"><a class="nav-link" href="productosVendidos.jsp">Productos vendidos</a></li>
+                                <li class="nav-item"><a class="nav-link" href="stockProductos.jsp">Stock productos</a></li>
+                            </ul>
+                        </div>
+                    </li>
+                    <li class="nav-item"><a class="nav-link" href="CerrarSesion">Cerrar Sesión</a></li>
+                </ul>
+            </div>
+        </div>
 
         <script src="script.js"></script>
     </body>
