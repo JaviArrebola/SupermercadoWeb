@@ -1,6 +1,7 @@
 function eliminarProducto(id) {
     document.getElementById("idProducto").value = id;
 }
+
 function editarProducto(nombre, stock, precio, codigoBarras) {
     console.log(nombre);
     document.getElementById("nombreProductoEditar").value = nombre;
@@ -32,22 +33,24 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     });
 
+    function esFechaISO(str) {
+        return /^\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}$/.test(str);
+    }
+
     function ordenarTabla(tabla, indiceColumna, orden) {
         const cuerpo = tabla.querySelector("tbody");
         const filas = Array.from(cuerpo.querySelectorAll("tr"));
-
-        const esNumero = filas.every(fila => {
-            const texto = fila.children[indiceColumna]?.textContent?.trim();
-            return !isNaN(texto) && texto !== "";
-        });
 
         filas.sort((a, b) => {
             const aTexto = a.children[indiceColumna].textContent.trim();
             const bTexto = b.children[indiceColumna].textContent.trim();
 
-            let resultado;
-            if (esNumero) {
+            let resultado = 0;
+
+            if (!isNaN(aTexto) && !isNaN(bTexto)) {
                 resultado = parseFloat(aTexto) - parseFloat(bTexto);
+            } else if (esFechaISO(aTexto) && esFechaISO(bTexto)) {
+                resultado = new Date(aTexto) - new Date(bTexto);
             } else {
                 resultado = aTexto.localeCompare(bTexto);
             }
@@ -55,6 +58,6 @@ document.addEventListener("DOMContentLoaded", function () {
             return orden === "asc" ? resultado : -resultado;
         });
 
-        filas.forEach(fila => cuerpo.appendChild(fila)); 
+        filas.forEach(fila => cuerpo.appendChild(fila));
     }
 });

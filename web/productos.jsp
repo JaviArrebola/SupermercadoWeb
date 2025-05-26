@@ -68,8 +68,8 @@
                             <option value="1-desc">Nombre (Mayor a Menor)</option>
                             <option value="2-asc">Precio (Menor a Mayor)</option>
                             <option value="2-desc">Precio (Mayor a Menor)</option>
-                            <option value="3-asc">Stock (Menor a Mayor)</option>
-                            <option value="3-desc">Stock (Mayor a Menor)</option>
+                            <option value="3-asc">Stock Ascendente</option>
+                            <option value="3-desc">Stock Descendente</option>
                         </select>
                         <button
                             class="btn btn-primary"
