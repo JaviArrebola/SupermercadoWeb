@@ -53,7 +53,7 @@
             </div>
             <div class="flex-grow-1 p-4 content-area">
                 <div class="d-flex justify-content-between align-items-center mb-4">
-                    <h2 class="mb-0">Ventas</h2>
+                    <h2 class="mb-0">Stock</h2>
                     <div class="d-flex align-items-center gap-3">
                         <label for="ordenar">Ordenar por:</label>
                         <select id="ordenarTablaStock">
@@ -64,16 +64,15 @@
                             <option value="2-asc">Stock Ascendente</option>
                             <option value="2-desc">Stock Descendente</option>
                         </select>
-
                     </div>
                 </div>
                 <div class="table-responsive">
                     <table class="table-custom" id="tablaStock">
                         <thead >
                             <tr>
-                                <th>ID Venta</th>
+                                <th>ID Producto</th>
                                 <th>Nombre</th>
-                                <th>Srock</th>
+                                <th>Stock</th>
                             </tr>
                         </thead>
                         <tbody>
