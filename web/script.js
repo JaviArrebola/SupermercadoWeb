@@ -1,3 +1,18 @@
+function eliminarProducto(id) {
+    document.getElementById("idProducto").value = id;
+}
+function editarProducto(nombre, stock, precio, codigoBarras) {
+    console.log(nombre);
+    document.getElementById("nombreProductoEditar").value = nombre;
+    document.getElementById("precioProductoEditar").value = precio;
+    document.getElementById("stockProductoEditar").value = stock;
+    document.getElementById("codigoBarrasEditar").value = codigoBarras;
+}
+
+function insertarId(idProducto){
+    document.getElementById("idProductoEditar").value = idProducto;
+}
+
 document.addEventListener("DOMContentLoaded", function () {
     const ordenadores = [
         { id: "ordenarTablaVentas", tabla: "tablaVentas" },

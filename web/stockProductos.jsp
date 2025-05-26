@@ -51,19 +51,20 @@
                     <li class="nav-item"><a class="nav-link" href="CerrarSesion">Cerrar Sesión</a></li>
                 </ul>
             </div>
-            <div class="flex-grow-1 p-3 content-area">
+            <div class="flex-grow-1 p-4 content-area">
                 <div class="d-flex justify-content-between align-items-center mb-4">
                     <h2 class="mb-0">Ventas</h2>
                     <div class="d-flex align-items-center gap-3">
                         <label for="ordenar">Ordenar por:</label>
-                        <select id="ordenarTablaVentas">
+                        <select id="ordenarTablaStock">
                             <option value="0-asc">ID Ascendente</option>
                             <option value="0-desc">ID Descendente</option>
-                            <option value="2-asc">Nombre Ascendente</option>
-                            <option value="2-desc">Nombre Descendente</option>
-                            <option value="3-asc">Stock Ascendente</option>
-                            <option value="3-desc">Stock Descendente</option>
+                            <option value="1-asc">Nombre Ascendente</option>
+                            <option value="1-desc">Nombre Descendente</option>
+                            <option value="2-asc">Stock Ascendente</option>
+                            <option value="2-desc">Stock Descendente</option>
                         </select>
+
                     </div>
                 </div>
                 <div class="table-responsive">
@@ -72,7 +73,7 @@
                             <tr>
                                 <th>ID Venta</th>
                                 <th>Nombre</th>
-                                <th>Stock</th>
+                                <th>Srock</th>
                             </tr>
                         </thead>
                         <tbody>

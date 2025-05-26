@@ -62,14 +62,14 @@
                     <div class="d-flex align-items-center gap-3">
                         <label for="ordenar">Ordenar por:</label>
                         <select id="ordenarTablaStock">
-                            <option value="0-asc">ID Ascendente</option>
-                            <option value="0-desc">ID Descendente</option>
-                            <option value="1-asc">Nombre Ascendente</option>
-                            <option value="1-desc">Nombre Descendente</option>
-                            <option value="2-asc">Precio Ascendente</option>
-                            <option value="2-desc">Precio Descendente</option>
-                            <option value="3-asc">Stock Ascendente</option>
-                            <option value="3-desc">Stock Descendente</option>
+                            <option value="0-asc">ID (Mayor a Menor)</option>
+                            <option value="0-desc">ID (Menor a Mayor)</option>
+                            <option value="1-asc">Nombre (Menor a Mayor)</option>
+                            <option value="1-desc">Nombre (Mayor a Menor)</option>
+                            <option value="2-asc">Precio (Menor a Mayor)</option>
+                            <option value="2-desc">Precio (Mayor a Menor)</option>
+                            <option value="3-asc">Stock (Menor a Mayor)</option>
+                            <option value="3-desc">Stock (Mayor a Menor)</option>
                         </select>
                         <button
                             class="btn btn-primary"

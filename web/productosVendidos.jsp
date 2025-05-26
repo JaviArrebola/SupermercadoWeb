@@ -59,7 +59,7 @@
                     <div class="d-flex align-items-center gap-3">
                         <label for="ordenar">Ordenar por:</label>
                         <select id="ordenarTablaVendidos">
-                            <option value="0-asc">ID Venta Ascendente</option>
+                            <option value="0-asc">ID Venta (Menor a Menor)</option>
                             <option value="0-desc">ID Venta Descendente</option>
                             <option value="1-asc">ID Producto Ascendente</option>
                             <option value="1-desc">ID Producto Descendente</option>
