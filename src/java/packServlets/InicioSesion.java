@@ -10,6 +10,7 @@ import java.security.NoSuchAlgorithmException;
 import java.sql.*;
 import packClass.SHA256;
 import packDB.ConexionDB;
+
 public class InicioSesion extends HttpServlet {
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -17,48 +18,58 @@ public class InicioSesion extends HttpServlet {
 
         String usuario = request.getParameter("nombre");
         String password = request.getParameter("password");
-        
+
         String queryInicioSesion = "SELECT e.password, e.username FROM administrador a JOIN empleados e ON a.id = e.id WHERE username = ?";
-        
+
         String error = null;
         String enviarPagina = null;
-    
+
         Connection conn = ConexionDB.getConexion();
-        String encoded="";
-		try {
-			encoded = SHA256.generateSHA(password);
-		} catch (NoSuchAlgorithmException e) {
-			e.printStackTrace();
-		}
+        if (conn == null) {
+            response.sendRedirect("errorConexion.jsp");
+            return;
+        }
+
+        String codificado = "";
+        try {
+            codificado = SHA256.generateSHA(password);
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        }
+
         ResultSet rs = null;
-        try(PreparedStatement ps = conn.prepareStatement(queryInicioSesion)) {
-            ps.setString(1,usuario);
+        try (PreparedStatement ps = conn.prepareStatement(queryInicioSesion)) {
+            ps.setString(1, usuario);
             rs = ps.executeQuery();
-            if(rs.next()){
-                if(encoded.equals(rs.getString("e.password"))){
+            if (rs.next()) {
+                if (codificado.equals(rs.getString("e.password"))) {
                     session.setAttribute("usuario", usuario);
                     enviarPagina = "productos.jsp";
-                }
-                else{
+                } else {
                     error = "Contraseña incorrecta";
                     session.setAttribute("error", error);
                     enviarPagina = "index.jsp";
-                    
                 }
-                
-            } else{
+
+            } else {
                 error = "Usuario incorrecto";
                 session.setAttribute("error", error);
-                enviarPagina = "index.jsp";  
+                enviarPagina = "index.jsp";
             }
-            
+
         } catch (SQLException e) {
             e.printStackTrace();
+        } finally {
+            try {
+                if (rs != null) {
+                    rs.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
         }
         response.sendRedirect(enviarPagina);
     }
-
-
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**

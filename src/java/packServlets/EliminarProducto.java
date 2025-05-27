@@ -14,34 +14,38 @@ public class EliminarProducto extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         HttpSession session = request.getSession();
-        
+
         String idProducto = request.getParameter("idProducto");
         String estadoProceso;
         String urlEnvio = null;
-        
-        if(idProducto != null && !idProducto.isEmpty()){
+
+        if (idProducto != null && !idProducto.isEmpty()) {
             int producto = Integer.parseInt(idProducto);
             Connection conn = ConexionDB.getConexion();
+            if (conn == null) {
+                response.sendRedirect("errorConexion.jsp");
+                return;
+            }
             ResultSet rs = null;
-            try(PreparedStatement ps = conn.prepareStatement("SELECT * FROM productos WHERE id = ?")) {
+            try (PreparedStatement ps = conn.prepareStatement("SELECT * FROM productos WHERE id = ?")) {
                 ps.setInt(1, producto);
-                
+
                 rs = ps.executeQuery();
 
-                if(rs.next()){
-                    try(PreparedStatement ps1 = conn.prepareStatement("DELETE FROM productos WHERE id = ?")) {
+                if (rs.next()) {
+                    try (PreparedStatement ps1 = conn.prepareStatement("DELETE FROM productos WHERE id = ?")) {
                         ps1.setInt(1, producto);
-                        
-                        if(ps1.executeUpdate() > 0){
-                            estadoProceso = "Producto eliminado con exito."; 
+
+                        if (ps1.executeUpdate() > 0) {
+                            estadoProceso = "Producto eliminado con exito.";
                             session.setAttribute("estadoProceso", estadoProceso);
                             urlEnvio = "productos.jsp";
-                        } else{
+                        } else {
                             estadoProceso = "No se ha podido eliminar el producto.";
                             session.setAttribute("estadoProceso", estadoProceso);
                             urlEnvio = "productos.jsp";
                         }
-                        
+
                     } catch (SQLException e) {
                         e.printStackTrace();
 
@@ -51,15 +55,15 @@ public class EliminarProducto extends HttpServlet {
                     session.setAttribute("estadoProceso", estadoProceso);
                     urlEnvio = "productos.jsp";
                 }
-                
+
             } catch (SQLException e) {
                 e.printStackTrace();
             }
-        } else{
+        } else {
             estadoProceso = "No se ha podido eliminar el producto.";
             session.setAttribute("estadoProceso", estadoProceso);
             urlEnvio = "productos.jsp";
-            
+
         }
         response.sendRedirect(urlEnvio);
     }

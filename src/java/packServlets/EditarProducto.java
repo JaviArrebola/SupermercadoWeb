@@ -14,50 +14,95 @@ public class EditarProducto extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         HttpSession session = request.getSession();
-        
+
         String idS = request.getParameter("idProductoEditar");
         String nombre = request.getParameter("nombreProductoEditar");
         String precioS = request.getParameter("precioProductoEditar");
         String stockS = request.getParameter("stockProductoEditar");
         String codigoBarras = request.getParameter("codigoBarrasEditar");
         String estadoProceso = "";
-        String urlEnvio = "";
- 
-        if (idS != null && !idS.isEmpty() && nombre != null && !nombre.isEmpty() && precioS != null && !precioS.isEmpty() && stockS != null && !stockS.isEmpty()) {
+        String urlEnvio = "productos.jsp";
+
+        if (idS != null && !idS.isEmpty() &&
+            nombre != null && !nombre.isEmpty() &&
+            precioS != null && !precioS.isEmpty() &&
+            stockS != null && !stockS.isEmpty()) {
+
             int id = Integer.parseInt(idS);
             double precio = Double.parseDouble(precioS);
             int stock = Integer.parseInt(stockS);
+
             Connection conn = ConexionDB.getConexion();
-            try(PreparedStatement ps = conn.prepareStatement("UPDATE productos SET nombre = ?, precio = ?, stock = ?, codigo_barras = ? WHERE id = ?")) {
-                ps.setString(1, nombre);
-                ps.setDouble(2, precio);
-                ps.setInt(3, stock);
-                ps.setString(4, codigoBarras);
-                ps.setInt(5, id);
-                
-                if (ps.executeUpdate() > 0){
-                    estadoProceso = "Producto editado correctamente.";
-                    session.setAttribute("estadoProceso", estadoProceso);
-                    urlEnvio = "productos.jsp";
+            if (conn == null) {
+                response.sendRedirect("errorConexion.jsp");
+                return;
+            }
+
+            try {
+                boolean verificarDuplicados = true;
+                String nombreActual = null;
+                String codigoActual = null;
+
+                // Obtener datos actuales
+                try (PreparedStatement psSelectActual = conn.prepareStatement(
+                        "SELECT nombre, codigo_barras FROM productos WHERE id = ?")) {
+                    psSelectActual.setInt(1, id);
+                    try (ResultSet rsActual = psSelectActual.executeQuery()) {
+                        if (rsActual.next()) {
+                            nombreActual = rsActual.getString("nombre");
+                            codigoActual = rsActual.getString("codigo_barras");
+                            if (nombre.equals(nombreActual) && codigoBarras.equals(codigoActual)) {
+                                verificarDuplicados = false;
+                            }
+                        }
+                    }
                 }
-                else{
-                    estadoProceso = "El Producto no ha podido ser editado correctamente.";
-                    session.setAttribute("estadoProceso", estadoProceso);
-                    urlEnvio = "productos.jsp";
+
+                if (verificarDuplicados) {
+                    try (PreparedStatement psCheckDuplicados = conn.prepareStatement(
+                            "SELECT id FROM productos WHERE (nombre = ? OR codigo_barras = ?) AND id <> ?")) {
+                        psCheckDuplicados.setString(1, nombre);
+                        psCheckDuplicados.setString(2, codigoBarras);
+                        psCheckDuplicados.setInt(3, id);
+                        try (ResultSet rsCheck = psCheckDuplicados.executeQuery()) {
+                            if (rsCheck.next()) {
+                                estadoProceso = "Ya existe otro producto con ese nombre o código de barras.";
+                                session.setAttribute("estadoProceso", estadoProceso);
+                                response.sendRedirect("productos.jsp");
+                                return;
+                            }
+                        }
+                    }
                 }
-                
+
+                // Actualizar producto
+                try (PreparedStatement psUpdate = conn.prepareStatement(
+                        "UPDATE productos SET nombre = ?, precio = ?, stock = ?, codigo_barras = ? WHERE id = ?")) {
+                    psUpdate.setString(1, nombre);
+                    psUpdate.setDouble(2, precio);
+                    psUpdate.setInt(3, stock);
+                    psUpdate.setString(4, codigoBarras);
+                    psUpdate.setInt(5, id);
+
+                    int filas = psUpdate.executeUpdate();
+                    if (filas > 0) {
+                        estadoProceso = "Producto editado correctamente.";
+                    } else {
+                        estadoProceso = "No se pudo editar el producto.";
+                    }
+                }
+
             } catch (SQLException e) {
                 e.printStackTrace();
+                estadoProceso = "Error al editar el producto en la base de datos.";
             }
-                
-        } else{
+
+        } else {
             estadoProceso = "No se han podido tratar los datos correctamente.";
-            session.setAttribute("estadoProceso", estadoProceso);
-            urlEnvio = "productos.jsp";
-            
         }
+
+        session.setAttribute("estadoProceso", estadoProceso);
         response.sendRedirect(urlEnvio);
-        
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
