@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
- */
 package packServlets;
 
 import java.io.IOException;
@@ -11,12 +7,18 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 
+/**
+ * Servlet que gestiona el cierre de sesión de un usuario.
+ */
 public class CerrarSesion extends HttpServlet {
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         HttpSession session = request.getSession();
+        
+        // Invalida la sesión, eliminando todos los atributos (logout)
         session.invalidate();
+        
         response.sendRedirect("index.jsp");
     }
 

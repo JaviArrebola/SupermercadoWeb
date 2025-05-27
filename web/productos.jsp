@@ -2,13 +2,14 @@
 <%@page import="packDB.ConexionDB"%>
 <%@page import="java.sql.*"%>
 <%
+    // Obtener sesión activa. Si no existe o no hay usuario logueado, redirige al login
     HttpSession sesion = request.getSession(false);
-
     if (sesion == null || sesion.getAttribute("usuario") == null) {
         response.sendRedirect("index.jsp");
         return;
     }
  
+    // Evita el almacenamiento en caché para siempre mostrar contenido actualizado
     response.setHeader("Cache-Control", "no-cache, no-store, must-revalidate"); 
     response.setHeader("Pragma", "no-cache"); 
     response.setDateHeader("Expires", 0);
@@ -29,8 +30,10 @@
 
     </head>
     <body>
+        <!-- Barra de navegación principal -->
         <nav class="navbar px-3 custom-navbar">
             <div class="d-flex align-items-center">
+                <!-- Botón de menú para dispositivos pequeños -->
                 <button class="btn btn-primary d-lg-none me-2" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasSidebar" aria-controls="offcanvasSidebar">
                     <i class="fa fa-bars"></i>
                 </button>
@@ -38,12 +41,14 @@
                 <span class="navbar-brand mb-0 h1">Supermercado</span>
             </div>
         </nav>
+
         <div class="d-flex">
-            <!-- Sidebar fijo solo en escritorio -->
+            <!-- Sidebar fijo visible solo en escritorio -->
             <div class="sidebar p-3 d-none d-lg-block" style="width: 250px; min-height: 100vh; border-right: 1px solid #ddd;">
                 <ul class="nav flex-column">
                     <li class="nav-item"><a class="nav-link" href="productos.jsp">Productos</a></li>
                     <li class="nav-item">
+                        <!-- Menú colapsable para estadísticas -->
                         <a class="nav-link" data-bs-toggle="collapse" href="#submenu" role="button" aria-expanded="false" aria-controls="submenu">
                             Estadísticas <i class="fa-solid fa-arrow-down"></i>
                         </a>
@@ -59,12 +64,14 @@
                 </ul>
             </div>
 
-
+            <!-- Área de contenido principal -->
             <div class="flex-grow-1 p-4 content-area">
+                <!-- Encabezado y acciones -->
                 <div class="d-flex justify-content-between align-items-center mb-4">
                     <h2 class="mb-0">Lista de Productos</h2>
                     <div class="d-flex align-items-center gap-3">
                         <label for="ordenar">Ordenar por:</label>
+                        <!-- Selector para ordenar columnas -->
                         <select id="ordenarTablaStock">
                             <option value="0-asc">ID (Menor a Mayor)</option>
                             <option value="0-desc">ID (Mayor a Menor)</option>
@@ -75,6 +82,8 @@
                             <option value="3-asc">Stock (Menor a Mayor)</option>
                             <option value="3-desc">Stock (Mayor a Menor)</option>
                         </select>
+
+                        <!-- Botón para añadir producto -->
                         <button
                             class="btn btn-primary"
                             data-bs-toggle="modal"
@@ -84,6 +93,8 @@
                         </button>
                     </div>
                 </div>
+
+                <!-- Mostrar modal si hay mensaje de estado en sesión -->
                 <%
                     String estadoProceso = (String) session.getAttribute("estadoProceso");
                     if(estadoProceso != null){ %>
@@ -99,6 +110,7 @@
                     session.removeAttribute("estadoProceso");
                 %>
 
+                <!-- Modal para mostrar estado del proceso -->
                 <div class="modal" id="ventanaModal" tabindex="-1">
                     <div class="modal-dialog">
                         <div class="modal-content">
@@ -116,6 +128,7 @@
                     </div>
                 </div>
 
+                <!-- Tabla de productos -->
                 <div class="table-responsive">
                     <table class="table" id="tablaStock">
                         <thead class="thead-dark">
@@ -125,18 +138,20 @@
                                 <th scope="col">Precio</th>
                                 <th scope="col">Stock</th>
                                 <th scope="col">Codigo</th>
-                               <th scope="col">Editar</th>
+                                <th scope="col">Editar</th>
 
 
                             </tr>
                         </thead>
-                            <tbody>
+                        <tbody>
                             <%
+                                // Consulta de productos en la base de datos
                                 Connection conn = ConexionDB.getConexion();
                                 try (PreparedStatement ps = conn.prepareStatement("SELECT * FROM productos");
                                     ResultSet rs = ps.executeQuery()) {
                                     while (rs.next()) {
                             %>
+                            <!-- Fila dinámica con los datos del producto -->
                             <tr>
                                 <td><%= rs.getInt("id") %></td>
                                 <td><%= rs.getString("nombre") %></td>
@@ -144,9 +159,11 @@
                                 <td><%= rs.getInt("stock") %></td>
                                 <td><%= rs.getString("codigo_barras") %></td>
                                 <td class="text-center">
-                                    
+                                    <!-- Icono editar -->
                                     <i class="fa-solid fa-pen-to-square icon-btn" style="color:greenyellow" onclick="editarProducto('<%= rs.getString("nombre") %>',<%= rs.getInt("stock") %>, '<%= rs.getString("precio")%>', '<%= rs.getString("codigo_barras")%>');
                                             insertarId(<%= rs.getInt("id") %>)" title="Editar" data-bs-toggle="modal" data-bs-target="#modalEditarProducto"></i>
+
+                                    <!-- Icono eliminar -->    
                                     <i
                                         class="fa-solid fa-trash icon-btn delete"
                                         style="color:red; cursor:pointer;"
@@ -169,6 +186,7 @@
             </div>
         </div>
 
+        <!-- Modal para insertar un nuevo producto -->
         <div
             class="modal fade"
             id="modalNuevoProducto"
@@ -223,6 +241,7 @@
             </div>
         </div>
 
+        <!-- Modal para confirmar la eliminación -->
         <div
             class="modal fade"
             id="modalConfirmarEliminar"
@@ -268,6 +287,8 @@
                 </div>
             </div>
         </div>
+
+        <!-- Modal para editar un producto -->
         <div class="modal fade" id="modalEditarProducto" tabindex="-1" aria-labelledby="modalEditarProductoLabel" aria-hidden="true">
             <div class="modal-dialog">
                 <div class="modal-content">
@@ -305,7 +326,8 @@
                 </div>
             </div>
         </div>    
-                        
+
+        <!-- Menú offcanvas para dispositivos móviles -->
         <div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasSidebar" aria-labelledby="offcanvasSidebarLabel">
             <div class="offcanvas-header">
                 <h5 class="offcanvas-title" id="offcanvasSidebarLabel">Menú</h5>

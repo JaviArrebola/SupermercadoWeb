@@ -9,12 +9,16 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import packDB.ConexionDB;
 
+/**
+ * Servlet que permite editar un producto existente en la base de datos.
+ */
 public class EditarProducto extends HttpServlet {
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         HttpSession session = request.getSession();
 
+        // Obtener parámetros del formulario
         String idS = request.getParameter("idProductoEditar");
         String nombre = request.getParameter("nombreProductoEditar");
         String precioS = request.getParameter("precioProductoEditar");
@@ -23,14 +27,31 @@ public class EditarProducto extends HttpServlet {
         String estadoProceso = "";
         String urlEnvio = "productos.jsp";
 
-        if (idS != null && !idS.isEmpty() &&
-            nombre != null && !nombre.isEmpty() &&
-            precioS != null && !precioS.isEmpty() &&
-            stockS != null && !stockS.isEmpty()) {
+        // Validación básica: que ningún campo obligatorio esté vacío
+        if (idS != null && !idS.isEmpty()
+                && nombre != null && !nombre.isEmpty()
+                && precioS != null && !precioS.isEmpty()
+                && stockS != null && !stockS.isEmpty()) {
 
+            // Parsear valores numéricos
             int id = Integer.parseInt(idS);
             double precio = Double.parseDouble(precioS);
             int stock = Integer.parseInt(stockS);
+
+            // Validar que precio y stock sean positivos
+            if (precio < 0) {
+                estadoProceso = "El precio debe ser un número positivo.";
+                session.setAttribute("estadoProceso", estadoProceso);
+                response.sendRedirect(urlEnvio);
+                return;
+            }
+
+            if (stock < 0) {
+                estadoProceso = "El stock no puede ser negativo.";
+                session.setAttribute("estadoProceso", estadoProceso);
+                response.sendRedirect(urlEnvio);
+                return;
+            }
 
             Connection conn = ConexionDB.getConexion();
             if (conn == null) {
@@ -43,7 +64,7 @@ public class EditarProducto extends HttpServlet {
                 String nombreActual = null;
                 String codigoActual = null;
 
-                // Obtener datos actuales
+                // Obtener los valores actuales del producto
                 try (PreparedStatement psSelectActual = conn.prepareStatement(
                         "SELECT nombre, codigo_barras FROM productos WHERE id = ?")) {
                     psSelectActual.setInt(1, id);
@@ -51,6 +72,8 @@ public class EditarProducto extends HttpServlet {
                         if (rsActual.next()) {
                             nombreActual = rsActual.getString("nombre");
                             codigoActual = rsActual.getString("codigo_barras");
+
+                            // Si nombre y código de barras no han cambiado, no es necesario verificar duplicados
                             if (nombre.equals(nombreActual) && codigoBarras.equals(codigoActual)) {
                                 verificarDuplicados = false;
                             }
@@ -58,6 +81,7 @@ public class EditarProducto extends HttpServlet {
                     }
                 }
 
+                // Verificar que no exista otro producto con el mismo nombre o código de barras
                 if (verificarDuplicados) {
                     try (PreparedStatement psCheckDuplicados = conn.prepareStatement(
                             "SELECT id FROM productos WHERE (nombre = ? OR codigo_barras = ?) AND id <> ?")) {
@@ -75,7 +99,7 @@ public class EditarProducto extends HttpServlet {
                     }
                 }
 
-                // Actualizar producto
+                // Actualizar los datos del producto en la base de datos
                 try (PreparedStatement psUpdate = conn.prepareStatement(
                         "UPDATE productos SET nombre = ?, precio = ?, stock = ?, codigo_barras = ? WHERE id = ?")) {
                     psUpdate.setString(1, nombre);
@@ -98,9 +122,11 @@ public class EditarProducto extends HttpServlet {
             }
 
         } else {
+            // Alguno de los campos está vacío o nulo
             estadoProceso = "No se han podido tratar los datos correctamente.";
         }
 
+        // Guardar estado del proceso y redirigir a productos.jsp
         session.setAttribute("estadoProceso", estadoProceso);
         response.sendRedirect(urlEnvio);
     }

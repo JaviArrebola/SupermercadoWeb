@@ -2,11 +2,14 @@
 <%@page import="packDB.ConexionDB"%>
 <%@page import="java.sql.*"%>
 <%
+    // Verificar si hay sesión activa y si el usuario está autenticado
     HttpSession sesion = request.getSession(false);
     if (sesion == null || sesion.getAttribute("usuario") == null) {
         response.sendRedirect("index.jsp");
         return;
     }
+    
+    // Evita el almacenamiento en caché de esta página protegida
     response.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
     response.setHeader("Pragma", "no-cache");
     response.setDateHeader("Expires", 0);
@@ -25,6 +28,8 @@
         <link rel="icon" type="image/x-icon" href="imagenes/icon.png">
     </head>
     <body>
+        
+        <!-- Barra de navegación superior -->
         <nav class="navbar px-3 custom-navbar">
             <div class="d-flex align-items-center">
                 <button class="btn btn-primary d-lg-none me-2" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasSidebar" aria-controls="offcanvasSidebar">
@@ -37,10 +42,12 @@
 
 
         <div class="d-flex">
+            <!-- Sidebar izquierdo (menú de navegación) -->
             <div class="sidebar p-3 d-none d-lg-block" style="width: 250px; min-height: 100vh; border-right: 1px solid #ddd;">
                 <ul class="nav flex-column">
                     <li class="nav-item"><a class="nav-link" href="productos.jsp">Productos</a></li>
                     <li class="nav-item">
+                        <!-- Submenú de estadísticas -->
                         <a class="nav-link" data-bs-toggle="collapse" href="#submenu" role="button" aria-expanded="false" aria-controls="submenu">
                             Estadísticas <i class="fa-solid fa-arrow-down"></i>
                         </a>
@@ -56,7 +63,9 @@
                 </ul>
             </div>
 
+            <!-- Contenido principal -->
             <div class="flex-grow-1 p-4 content-area">
+                <!-- Encabezado y selector de orden -->
                 <div class="d-flex justify-content-between align-items-center mb-4">
                     <h2 class="mb-0">Ventas</h2>
                     <div class="d-flex align-items-center gap-3">
@@ -72,6 +81,7 @@
                     </div>
                 </div>
 
+                 <!-- Tabla de ventas -->
                 <div class="table-responsive">
                     <table class="table" id="tablaVentas">
                         <thead class="thead-dark">
@@ -83,6 +93,7 @@
                         </thead>
                         <tbody>
                             <%
+                                // Conexión a la base de datos y obtención de ventas
                                 Connection conn = ConexionDB.getConexion();
                                 try (PreparedStatement ps = conn.prepareStatement("SELECT * FROM ventas");
                                      ResultSet rs = ps.executeQuery()) {
@@ -103,7 +114,9 @@
                     </table>
                 </div>
             </div>
-        </div>                      
+        </div> 
+                        
+        <!-- Sidebar lateral para móviles -->                
         <div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasSidebar" aria-labelledby="offcanvasSidebarLabel">
             <div class="offcanvas-header">
                 <h5 class="offcanvas-title" id="offcanvasSidebarLabel">Menú</h5>
@@ -113,6 +126,7 @@
                 <ul class="nav flex-column">
                     <li class="nav-item"><a class="nav-link" href="productos.jsp">Productos</a></li>
                     <li class="nav-item">
+                        <!-- Submenú móvil -->
                         <a class="nav-link" data-bs-toggle="collapse" href="#submenuMobile" role="button" aria-expanded="false" aria-controls="submenuMobile">
                             Estadísticas <i class="fa-solid fa-arrow-down"></i>
                         </a>

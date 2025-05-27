@@ -2,11 +2,14 @@
 <%@page import="packDB.ConexionDB"%>
 <%@page import="java.sql.*"%>
 <%
+    // Obtiene la sesión activa, si no hay usuario logueado redirige a login
     HttpSession sesion = request.getSession(false);
     if (sesion == null || sesion.getAttribute("usuario") == null) {
         response.sendRedirect("index.jsp");
         return;
     }
+    
+    // Configura cabeceras para evitar que el navegador guarde en caché la página
     response.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
     response.setHeader("Pragma", "no-cache");
     response.setDateHeader("Expires", 0);
@@ -26,21 +29,25 @@
         <link rel="icon" type="image/x-icon" href="imagenes/icon.png">
     </head>
     <body>
-         <nav class="navbar px-3 custom-navbar">
+        <!-- Barra de navegación superior -->
+        <nav class="navbar px-3 custom-navbar">
             <div class="d-flex align-items-center">
+                <!-- Botón de menú para dispositivos móviles -->
                 <button class="btn btn-primary d-lg-none me-2" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasSidebar" aria-controls="offcanvasSidebar">
                     <i class="fa fa-bars"></i>
                 </button>
+                <!-- Logo y título -->
                 <img src="imagenes/icon.png" alt="Supermercado" width="40" class="me-2" />
                 <span class="navbar-brand mb-0 h1">Supermercado</span>
             </div>
         </nav>
         <div class="d-flex">
-            <!-- Sidebar fijo solo en escritorio -->
+            <!-- Sidebar lateral (visible solo en escritorio) -->
             <div class="sidebar p-3 d-none d-lg-block" style="width: 250px; min-height: 100vh; border-right: 1px solid #ddd;">
                 <ul class="nav flex-column">
                     <li class="nav-item"><a class="nav-link" href="productos.jsp">Productos</a></li>
                     <li class="nav-item">
+                        <!-- Submenú colapsable -->
                         <a class="nav-link" data-bs-toggle="collapse" href="#submenu" role="button" aria-expanded="false" aria-controls="submenu">
                             Estadísticas <i class="fa-solid fa-arrow-down"></i>
                         </a>
@@ -56,11 +63,14 @@
                 </ul>
             </div>
 
+            <!-- Contenedor principal de contenido -->
             <div class="flex-grow-1 p-4 content-area">
+                <!-- Encabezado y selector de orden -->
                 <div class="d-flex justify-content-between align-items-center mb-4">
                     <h2 class="mb-0">Productos Vendidos</h2>
                     <div class="d-flex align-items-center gap-3">
                         <label for="ordenar">Ordenar por:</label>
+                        <!-- Selector de orden dinámico -->
                         <select id="ordenarTablaVendidos">
                             <option value="0-asc">ID Venta (Menor a Menor)</option>
                             <option value="0-desc">ID Venta (Mayor a Menor)</option>
@@ -75,6 +85,7 @@
                         </select>
                     </div>
                 </div>
+                <!-- Tabla de productos vendidos -->
                 <div class="table-responsive">
                     <table class="table" id="tablaVendidos">
                         <thead class="thead-dark">
@@ -88,10 +99,12 @@
                         </thead>
                         <tbody>
                             <%
+                                // Variables para conexión y consultas
                                 Connection conn = null;
                                 PreparedStatement ps = null;
                                 ResultSet rs = null;
                                 try {
+                                    // Conexión y consulta a la base de datos
                                     conn = ConexionDB.getConexion();
                                     String sql = "SELECT dv.id_venta, dv.id_producto, p.nombre AS nombre_producto, " +
                                                  "SUM(dv.cantidad) AS cantidad, " +
@@ -104,6 +117,7 @@
                                     ps = conn.prepareStatement(sql);
                                     rs = ps.executeQuery();
 
+                                    // Iterar sobre resultados y mostrar cada fila
                                     while (rs.next()) {
                             %>
                             <tr>
@@ -117,6 +131,18 @@
                                  }
                                 } catch (SQLException e) {
                                     out.println("<tr><td colspan='5'>Error: " + e.getMessage() + "</td></tr>");
+                                }finally {
+                                // Cierre de recursos
+                                    try {
+                                        if (ps != null) ps.close();
+                                    } catch (SQLException e) {
+                                        out.println("<tr><td colspan='5'>Error al cerrar PreparedStatement: " + e.getMessage() + "</td></tr>");
+                                    }
+                                    try {
+                                        if (conn != null) conn.close();
+                                    } catch (SQLException e) {
+                                        out.println("<tr><td colspan='5'>Error al cerrar Connection: " + e.getMessage() + "</td></tr>");
+                                    }
                                 }
                             %>
                         </tbody>
@@ -125,6 +151,7 @@
                 </div>
             </div>
         </div>
+        <!-- Menú lateral en versión móvil (offcanvas) -->
         <div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasSidebar" aria-labelledby="offcanvasSidebarLabel">
             <div class="offcanvas-header">
                 <h5 class="offcanvas-title" id="offcanvasSidebarLabel">Menú</h5>
@@ -134,6 +161,7 @@
                 <ul class="nav flex-column">
                     <li class="nav-item"><a class="nav-link" href="productos.jsp">Productos</a></li>
                     <li class="nav-item">
+                        <!-- Submenú colapsable en móvil -->
                         <a class="nav-link" data-bs-toggle="collapse" href="#submenuMobile" role="button" aria-expanded="false" aria-controls="submenuMobile">
                             Estadísticas <i class="fa-solid fa-arrow-down"></i>
                         </a>

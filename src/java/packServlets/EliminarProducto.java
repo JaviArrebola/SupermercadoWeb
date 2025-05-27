@@ -9,62 +9,76 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 import packDB.ConexionDB;
 
+/**
+ * Servlet encargado de eliminar un producto de la base de datos.
+ */
 public class EliminarProducto extends HttpServlet {
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         HttpSession session = request.getSession();
 
+        // Se obtiene el ID del producto desde los parámetros del formulario
         String idProducto = request.getParameter("idProducto");
-        String estadoProceso;
-        String urlEnvio = null;
 
+        String estadoProceso;// Variable para almacenar el resultado del proceso
+        String urlEnvio = "productos.jsp";// Página a la que se redirige tras la operación
+
+        // Validar que el ID no sea nulo o vacío
         if (idProducto != null && !idProducto.isEmpty()) {
-            int producto = Integer.parseInt(idProducto);
+            int productoId = Integer.parseInt(idProducto);
+
             Connection conn = ConexionDB.getConexion();
             if (conn == null) {
+                // Si la conexión falla, redirigir a una página de error
                 response.sendRedirect("errorConexion.jsp");
                 return;
             }
-            ResultSet rs = null;
-            try (PreparedStatement ps = conn.prepareStatement("SELECT * FROM productos WHERE id = ?")) {
-                ps.setInt(1, producto);
 
-                rs = ps.executeQuery();
-
-                if (rs.next()) {
-                    try (PreparedStatement ps1 = conn.prepareStatement("DELETE FROM productos WHERE id = ?")) {
-                        ps1.setInt(1, producto);
-
-                        if (ps1.executeUpdate() > 0) {
-                            estadoProceso = "Producto eliminado con exito.";
-                            session.setAttribute("estadoProceso", estadoProceso);
-                            urlEnvio = "productos.jsp";
-                        } else {
-                            estadoProceso = "No se ha podido eliminar el producto.";
-                            session.setAttribute("estadoProceso", estadoProceso);
-                            urlEnvio = "productos.jsp";
+            try {
+                // Verificar si el producto está en detalle_venta
+                boolean estaEnUso = false;
+                try (PreparedStatement psCheck = conn.prepareStatement(
+                        "SELECT 1 FROM detalle_venta WHERE id_producto = ? LIMIT 1")) {
+                    psCheck.setInt(1, productoId);
+                    try (ResultSet rs = psCheck.executeQuery()) {
+                        if (rs.next()) {
+                            estaEnUso = true;
                         }
-
-                    } catch (SQLException e) {
-                        e.printStackTrace();
-
                     }
+                }
+
+                if (estaEnUso) {
+                    // No se permite eliminar el producto si está asociado a alguna venta
+                    estadoProceso = "No se puede eliminar el producto porque está asociado a una venta.";
                 } else {
-                    estadoProceso = "El producto no estaba en la lista.";
-                    session.setAttribute("estadoProceso", estadoProceso);
-                    urlEnvio = "productos.jsp";
+                    // Intentar eliminar el producto si no está en uso
+                    try (PreparedStatement psDelete = conn.prepareStatement(
+                            "DELETE FROM productos WHERE id = ?")) {
+                        psDelete.setInt(1, productoId);
+                        int filas = psDelete.executeUpdate();
+
+                        // Verificar si se eliminó correctamente
+                        if (filas > 0) {
+                            estadoProceso = "Producto eliminado con éxito.";
+                        } else {
+                            estadoProceso = "No se pudo eliminar el producto.";
+                        }
+                    }
                 }
 
             } catch (SQLException e) {
+                // Capturar errores relacionados con la base de datos
                 e.printStackTrace();
+                estadoProceso = "Error en la base de datos al eliminar el producto.";
             }
-        } else {
-            estadoProceso = "No se ha podido eliminar el producto.";
-            session.setAttribute("estadoProceso", estadoProceso);
-            urlEnvio = "productos.jsp";
 
+        } else {
+            // Si el ID es inválido
+            estadoProceso = "ID de producto inválido.";
         }
+
+        session.setAttribute("estadoProceso", estadoProceso);
         response.sendRedirect(urlEnvio);
     }
 
