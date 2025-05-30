@@ -28,7 +28,7 @@
         <link rel="icon" type="image/x-icon" href="imagenes/icon.png">
     </head>
     <body>
-        
+
         <!-- Barra de navegación superior -->
         <nav class="navbar px-3 custom-navbar">
             <div class="d-flex align-items-center">
@@ -56,6 +56,8 @@
                                 <li class="nav-item"><a class="nav-link" href="ventas.jsp">Ventas</a></li>
                                 <li class="nav-item"><a class="nav-link" href="productosVendidos.jsp">Productos vendidos</a></li>
                                 <li class="nav-item"><a class="nav-link" href="stockProductos.jsp">Stock productos</a></li>
+                                <li class="nav-item"><a class="nav-link" href="masVendido.jsp">Mas vendido</a></li>
+
                             </ul>
                         </div>
                     </li>
@@ -81,7 +83,7 @@
                     </div>
                 </div>
 
-                 <!-- Tabla de ventas -->
+                <!-- Tabla de ventas -->
                 <div class="table-responsive">
                     <table class="table" id="tablaVentas">
                         <thead class="thead-dark">
@@ -115,7 +117,7 @@
                 </div>
             </div>
         </div> 
-                        
+
         <!-- Sidebar lateral para móviles -->                
         <div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasSidebar" aria-labelledby="offcanvasSidebarLabel">
             <div class="offcanvas-header">
@@ -135,6 +137,9 @@
                                 <li class="nav-item"><a class="nav-link" href="ventas.jsp">Ventas</a></li>
                                 <li class="nav-item"><a class="nav-link" href="productosVendidos.jsp">Productos vendidos</a></li>
                                 <li class="nav-item"><a class="nav-link" href="stockProductos.jsp">Stock productos</a></li>
+                                <li class="nav-item"><a class="nav-link" href="masVendido.jsp">Mas vendido</a></li>
+
+
                             </ul>
                         </div>
                     </li>

@@ -56,6 +56,8 @@
                                 <li class="nav-item"><a class="nav-link" href="ventas.jsp">Ventas</a></li>
                                 <li class="nav-item"><a class="nav-link" href="productosVendidos.jsp">Productos vendidos</a></li>
                                 <li class="nav-item"><a class="nav-link" href="stockProductos.jsp">Stock productos</a></li>
+                                <li class="nav-item"><a class="nav-link" href="masVendido.jsp">Mas vendido</a></li>
+
                             </ul>
                         </div>
                     </li>
@@ -131,18 +133,7 @@
                                  }
                                 } catch (SQLException e) {
                                     out.println("<tr><td colspan='5'>Error: " + e.getMessage() + "</td></tr>");
-                                }finally {
-                                // Cierre de recursos
-                                    try {
-                                        if (ps != null) ps.close();
-                                    } catch (SQLException e) {
-                                        out.println("<tr><td colspan='5'>Error al cerrar PreparedStatement: " + e.getMessage() + "</td></tr>");
-                                    }
-                                    try {
-                                        if (conn != null) conn.close();
-                                    } catch (SQLException e) {
-                                        out.println("<tr><td colspan='5'>Error al cerrar Connection: " + e.getMessage() + "</td></tr>");
-                                    }
+                            
                                 }
                             %>
                         </tbody>
@@ -170,6 +161,9 @@
                                 <li class="nav-item"><a class="nav-link" href="ventas.jsp">Ventas</a></li>
                                 <li class="nav-item"><a class="nav-link" href="productosVendidos.jsp">Productos vendidos</a></li>
                                 <li class="nav-item"><a class="nav-link" href="stockProductos.jsp">Stock productos</a></li>
+                                <li class="nav-item"><a class="nav-link" href="masVendido.jsp">Mas vendido</a></li>
+
+
                             </ul>
                         </div>
                     </li>

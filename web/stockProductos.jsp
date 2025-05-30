@@ -56,6 +56,8 @@
                                 <li class="nav-item"><a class="nav-link" href="ventas.jsp">Ventas</a></li>
                                 <li class="nav-item"><a class="nav-link" href="productosVendidos.jsp">Productos vendidos</a></li>
                                 <li class="nav-item"><a class="nav-link" href="stockProductos.jsp">Stock productos</a></li>
+                                <li class="nav-item"><a class="nav-link" href="masVendido.jsp">Mas vendido</a></li>
+
                             </ul>
                         </div>
                     </li>
@@ -138,6 +140,9 @@
                                 <li class="nav-item"><a class="nav-link" href="ventas.jsp">Ventas</a></li>
                                 <li class="nav-item"><a class="nav-link" href="productosVendidos.jsp">Productos vendidos</a></li>
                                 <li class="nav-item"><a class="nav-link" href="stockProductos.jsp">Stock productos</a></li>
+                                <li class="nav-item"><a class="nav-link" href="masVendido.jsp">Mas vendido</a></li>
+
+
                             </ul>
                         </div>
                     </li>
